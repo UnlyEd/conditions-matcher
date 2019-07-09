@@ -5,7 +5,6 @@ This project is a skeleton for library open source
 <!-- toc -->
 
 - [Getting started](#getting-started)
-- [API](#api)
 - [Contributing](#contributing)
   * [Getting started](#getting-started-1)
   * [Test](#test)
@@ -16,21 +15,27 @@ This project is a skeleton for library open source
 
 ## Getting started
 
-npm or yarn
+### Installation
 
+Using npm :
+```
+npm i @unly/prisma-algorithm-matcher
+```
+Using yarn :
+```
+yarn add @unly/prisma-algorithm-matcher
 ```
 
+### Usage
+ES5
+```js
+const contextMatcher = require("@unly/prisma-algorithm-matcher");
 ```
 
-Use:
-
+ES6
+```js
+import checkContextMatchesConditions from "@unly/prisma-algorithm-matcher";
 ```
-
-```
-
-## API
-
-[API](./API.md)
 
 ---
 

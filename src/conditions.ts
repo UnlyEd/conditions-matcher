@@ -56,7 +56,7 @@ export const defaultOptions = {
  * @param options
  * @returns {object}
  */
-const checkContextMatchesConditions = ({ filters, context, options = defaultOptions }: { filters: IFilter, context: object, options: object }) => {
+const checkContextMatchesConditions = (filters: IFilter, context: object, options: object = defaultOptions) => {
   let returnValues: IReturnValuesType = {};
   let ignoredConditionsArr: object[] = [];
   filters = formatFilters(Object.assign({}, filters));
@@ -64,7 +64,7 @@ const checkContextMatchesConditions = ({ filters, context, options = defaultOpti
   for (let [key, value] of Object.entries(filters)) {
     if (key in operators) {
       value.forEach((condition: object[]) => {
-        const { status, ignoredConditions } = checkContextMatchesConditions({ filters: condition, context: context, options: options });
+        const { status, ignoredConditions } = checkContextMatchesConditions(condition, context, options);
 
         if (status === false && ignoredConditions !== null) {
           ignoredConditionsArr.push(ignoredConditions);
@@ -75,7 +75,7 @@ const checkContextMatchesConditions = ({ filters, context, options = defaultOpti
       });
     } else {
       try {
-        const result = check({ context: context, key: key, value: value, options: options });
+        const result = check(context, key, value, options);
         filters[key + '__result'] = result;
 
         if (result['status'] === false) {

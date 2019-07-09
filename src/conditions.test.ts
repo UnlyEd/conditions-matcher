@@ -1,6 +1,6 @@
-import { checkContextMatchesConditions } from './conditions';
+import checkContextMatchesConditions from './conditions';
 
-describe('utils/studentSolutions', () => {
+describe('src/studentSolutions', () => {
   describe('checkContextMatchesConditions should', () => {
     describe('when using AND operator alone, without complex nesting (using both expressive AND or assumed AND)', () => {
       test(`should match when correct organisation_name is in context`, async () => {
@@ -19,8 +19,8 @@ describe('utils/studentSolutions', () => {
             name: 'skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersSimple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersSimple, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
       });
 
       test(`should NOT match when incorrect organisation_name is in context`, async () => {
@@ -48,10 +48,10 @@ describe('utils/studentSolutions', () => {
             y: 'unused-property',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersSimple, context: context } })).toMatchObject({ 'status': false });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersSimple, context: contextNoisy } })).toMatchObject({ 'status': false });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': false });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: contextNoisy } })).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersSimple, context)).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersSimple, contextNoisy)).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedSimple, contextNoisy)).toMatchObject({ 'status': false });
       });
 
       test(`should match when correct institution_name is in context`, async () => {
@@ -70,8 +70,8 @@ describe('utils/studentSolutions', () => {
             name: 'skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersSimple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersSimple, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
       });
 
       test(`should match when correct organisation_name and institution_name are in context`, async () => {
@@ -95,8 +95,8 @@ describe('utils/studentSolutions', () => {
             name: 'demo',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersSimple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersSimple, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
       });
 
       test(`should NOT match when correct organisation_name and institution_name are in context`, async () => {
@@ -120,8 +120,8 @@ describe('utils/studentSolutions', () => {
             name: 'another-mismatching-name',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersSimple, context: context } })).toMatchObject({ 'status': false });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersSimple, context)).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': false });
       });
 
       test(`should match when correct organisation_name and institution_name and campus_name are in context`, async () => {
@@ -150,8 +150,8 @@ describe('utils/studentSolutions', () => {
             name: 'paris',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersSimple, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersSimple, context)).toMatchObject({ 'status': true });
       });
 
       test(`should NOT match when correct organisation_name and institution_name are in context but campus_name is wrong`, async () => {
@@ -180,8 +180,8 @@ describe('utils/studentSolutions', () => {
             name: 'not-paris',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': false });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersSimple, context: context } })).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersSimple, context)).toMatchObject({ 'status': false });
       });
     });
 
@@ -202,7 +202,7 @@ describe('utils/studentSolutions', () => {
             name: 'skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
       });
 
       test(`should match when correct organisation_name and institution_name are in context`, async () => {
@@ -232,11 +232,11 @@ describe('utils/studentSolutions', () => {
             name: 'skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultiple, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedMultiple, context)).toMatchObject({ 'status': true });
       });
 
-      test(`should match when correct organisation_name and institution_name are in context`, async () => {
+      test(`should match when correct organisation_name and institution_name nested are in context`, async () => {
         const filtersNestedSimple = {
           'OR': [
             {
@@ -278,9 +278,9 @@ describe('utils/studentSolutions', () => {
             name: 'skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultiple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultipleMix, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedMultiple, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedMultipleMix, context)).toMatchObject({ 'status': true });
       });
     });
 
@@ -298,7 +298,7 @@ describe('utils/studentSolutions', () => {
             name: 'not-skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
       });
 
       test(`should NOT match when organisation_name in context is unallowed`, async () => {
@@ -314,7 +314,7 @@ describe('utils/studentSolutions', () => {
             name: 'skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': false });
       });
 
       test(`should match when organisation_name and institution_name in context aren't unallowed`, async () => {
@@ -344,8 +344,8 @@ describe('utils/studentSolutions', () => {
             name: 'not-skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultiple, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedMultiple, context)).toMatchObject({ 'status': true });
       });
 
       test(`should NOT match when organisation_name and institution_name in context are unallowed`, async () => {
@@ -375,55 +375,8 @@ describe('utils/studentSolutions', () => {
             name: 'demo',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': false });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultiple, context: context } })).toMatchObject({ 'status': false });
-      });
-
-      test(`should match when organisation_name and institution_name in context aren't unallowed`, async () => {
-        const filtersNestedSimple = {
-          'NOT': [
-            {
-              'organisation_name': 'skema',
-              'institution_name': 'skema',
-              'some_name': 'skema',
-            },
-          ],
-        };
-        const filtersNestedMultiple = {
-          'NOT': [
-            {
-              'organisation_name': 'skema',
-            },
-            {
-              'institution_name': 'skema',
-            },
-            {
-              'some_name': 'skema',
-            },
-          ],
-        };
-        const filtersNestedMultipleMix = {
-          'NOT': [
-            {
-              'organisation_name': 'skema',
-              'institution_name': 'skema',
-            },
-            {
-              'some_name': 'skema',
-            },
-          ],
-        };
-        const context = {
-          organisation: {
-            name: 'not-skema',
-          },
-          institution: {
-            name: 'not-skema',
-          },
-        };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultiple, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultipleMix, context: context } })).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedMultiple, context)).toMatchObject({ 'status': false });
       });
 
       test(`should NOT match when organisation_name isn't allowed, even if other filters are allowed`, async () => {
@@ -473,10 +426,10 @@ describe('utils/studentSolutions', () => {
             name: 'not-skema',
           },
         };
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': false });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimpleExpressiveAND, context: context } })).toMatchObject({ 'status': true });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultiple, context: context } })).toMatchObject({ 'status': false });
-        expect(checkContextMatchesConditions({ filters: { filters: filtersNestedMultipleMix, context: context } })).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedSimpleExpressiveAND, context)).toMatchObject({ 'status': true });
+        expect(checkContextMatchesConditions(filtersNestedMultiple, context)).toMatchObject({ 'status': false });
+        expect(checkContextMatchesConditions(filtersNestedMultipleMix, context)).toMatchObject({ 'status': false });
       });
     });
 
@@ -504,7 +457,7 @@ describe('utils/studentSolutions', () => {
               name: 'skema',
             },
           };
-          expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+          expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
         });
       });
 
@@ -545,7 +498,7 @@ describe('utils/studentSolutions', () => {
               },
             ],
           };
-          expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+          expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
         });
 
         test(`should work with multiple NOT and using _i flag`, async () => {
@@ -565,7 +518,7 @@ describe('utils/studentSolutions', () => {
               },
             ],
           };
-          expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+          expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
         });
 
         test(`should work with multiple AND, OR and NOT`, async () => {
@@ -587,7 +540,7 @@ describe('utils/studentSolutions', () => {
               },
             ],
           };
-          expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+          expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
         });
 
         test(`should work with multiple AND, OR and NOT to false`, async () => {
@@ -609,7 +562,7 @@ describe('utils/studentSolutions', () => {
               },
             ],
           };
-          expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': false });
+          expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': false });
         });
       });
 
@@ -640,7 +593,7 @@ describe('utils/studentSolutions', () => {
               },
             ],
           };
-          const { status, ignoredConditions } = checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } });
+          const { status, ignoredConditions } = checkContextMatchesConditions(filtersNestedSimple, context);
           expect(status).toBe(true);
           expect(ignoredConditions).toMatchObject([{ operator: 'wrong-arg' }]);
         });
@@ -664,7 +617,7 @@ describe('utils/studentSolutions', () => {
               },
             ],
           };
-          expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': true });
+          expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': true });
         });
 
         test(`should work with multiple AND, OR and NOT to false`, async () => {
@@ -686,10 +639,87 @@ describe('utils/studentSolutions', () => {
               },
             ],
           };
-          expect(checkContextMatchesConditions({ filters: { filters: filtersNestedSimple, context: context } })).toMatchObject({ 'status': false });
+          expect(checkContextMatchesConditions(filtersNestedSimple, context)).toMatchObject({ 'status': false });
         });
       });
+    });
 
+    describe('handle missing context', () => {
+      test('AND filter and totally empty context should be true', async () => {
+        const filter = {
+          'AND': [
+            {
+              'name': 'EPITECH',
+            },
+          ],
+        };
+        const ret = checkContextMatchesConditions(filter, {});
+        expect(ret.status).toBe(true);
+        expect(ret.ignoredConditions).toHaveLength(1);
+        expect(ret.ignoredConditions[0].expected).toBeUndefined();
+
+      });
+      test('AND filter and empty context should be true', async () => {
+        const filter = {
+          'AND': [{ 'name': 'EPITECH', 'age': 18 }],
+        };
+        const context = {
+          'age': 18,
+        };
+        const ret = checkContextMatchesConditions(filter, context);
+        expect(ret.status).toBe(true);
+        expect(ret.ignoredConditions).toHaveLength(1);
+        expect(ret.ignoredConditions[0].expected).toBeUndefined();
+      });
+      test('NOT filter and empty context should be true', async () => {
+        const filter = {
+          'NOT': [{ 'name': 'EPITECH', 'age': 21 }],
+        };
+        const context = {
+          'age': 18,
+        };
+        const ret = checkContextMatchesConditions(filter, context);
+        expect(ret.status).toBe(true);
+        expect(ret.ignoredConditions).toHaveLength(1);
+        expect(ret.ignoredConditions[0].expected).toBeUndefined();
+      });
+      test('OR filter and empty context should be true ', async () => {
+        const filter = {
+          'OR': [{ 'name': 'EPITECH', 'age': 18 }],
+        };
+        const context = {
+          'age': 18,
+        };
+        const ret = checkContextMatchesConditions(filter, context);
+        expect(ret.status).toBe(true);
+        expect(ret.ignoredConditions).toHaveLength(1);
+        expect(ret.ignoredConditions[0].expected).toBeUndefined();
+      });
+      test('AND filter and empty context should return false', async () => {
+        const filter = {
+          'AND': [{ 'name': 'EPITECH', 'age': 21 }],
+        };
+        const context = {
+          'age': 18,
+        };
+        const ret = checkContextMatchesConditions(filter, context);
+        expect(ret.status).toBe(false);
+        expect(ret.ignoredConditions).toHaveLength(1);
+        expect(ret.ignoredConditions[0].expected).toBeUndefined();
+      });
+    });
+
+    describe('test strict match option', () => {
+      test('AND filter and empty context with strict match should be false', async () => {
+        const filter = {
+          'AND': [{ 'name': 'EPITECH', 'age': 18 }],
+        };
+        const context = {
+          'age': 18,
+        };
+        const ret = checkContextMatchesConditions(filter, context, { 'strictMatch': true });
+        expect(ret.status).toBe(false);
+      });
     });
   });
 });

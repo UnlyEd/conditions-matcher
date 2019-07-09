@@ -2,8 +2,7 @@ import { conditions, DEFAULT_CONDITION, EVERY_STRING, GET_SEPARATOR, NONE_STRING
 import { CheckError, ValueNotFound } from './errors';
 import { defaultOptions, IFilter } from './conditions';
 
-// @ts-ignore
-import { get } from 'lodash.get';
+import { get } from "lodash";
 /**
  * This function allows me to find in the conditions object, the target I'm looking for
  * like the call of the equal operator or the humanlyReadableAs.
@@ -14,7 +13,7 @@ import { get } from 'lodash.get';
  * @param flag
  * @return {*}
  */
-export const findInConditions = ({ condition, target, flag }: { condition: string, target: string, flag: string[] }) => {
+export const findInConditions = (condition: string, target: string, flag: string[]) => {
   for (const key in conditions) {
     if (conditions[key].alias.includes(condition)) {
       return conditions[key][target];
@@ -69,13 +68,13 @@ export const buildArg = (key: string) => {
  * @param value
  * @return {{reason: string, flag: *, given_value: *, expected: Array, operator: *, status: *}}
  */
-export const handleComplexRequest = ({ operator, path, flag, context, value }: { operator: string, path: string, flag: string[], context: IFilter, value: any }) => {
+export const handleComplexRequest = (operator: string, path: string, flag: string[], context: IFilter, value: any) => {
   let result: boolean[] = [];
   let match: IFilter = [];
   let tab: string[] = path.split('.');
   const tocheck: any = tab.pop();
   const expectedTab = get(context, tab.join('.'));
-  const call = findInConditions({ condition: flag[0], target: 'call', flag: flag });
+  const call = findInConditions(flag[0], 'call', flag);
 
   expectedTab.forEach((expected: any) => {
     if (typeof expected === 'undefined' || typeof value === 'undefined') {
@@ -85,28 +84,20 @@ export const handleComplexRequest = ({ operator, path, flag, context, value }: {
         'given_value': value,
         'expected': expected,
         'flag': flag,
-        'reason': `${status ? 'Success' : 'Fail'} because ${operator} of "${expected}" is ${status ? '' : 'not'} ${findInConditions({
-          condition: flag[0],
-          target: 'humanlyReadableAs',
-          flag: flag
-        })} "${value}"`,
+        'reason': `${status ? 'Success' : 'Fail'} because ${operator} of "${expected}" is ${status ? '' : 'not'} ${findInConditions(flag[0],'humanlyReadableAs', flag)} "${value}"`,
       };
     }
     match.push({ 'value': value, 'expected': expected[tocheck] });
     result.push(call(value, expected[tocheck], flag));
   });
-  const status = findInConditions({ condition: operator, target: 'call', flag: flag })(result);
+  const status = findInConditions(operator, 'call', flag)(result);
   return {
     'status': status,
     'operator': operator,
     'given_value': value,
     'expected': match,
     'flag': flag,
-    'reason': `${status ? 'Success' : 'Fail'} because "${match}" is ${status ? '' : 'not'} ${findInConditions({
-      condition: operator,
-      target: 'humanlyReadableAs',
-      flag: flag
-    })} "${value}"`,
+    'reason': `${status ? 'Success' : 'Fail'} because "${match}" is ${status ? '' : 'not'} ${findInConditions(operator, 'humanlyReadableAs', flag)} "${value}"`,
   };
 };
 
@@ -123,11 +114,11 @@ export const handleComplexRequest = ({ operator, path, flag, context, value }: {
  * @param options
  * @return {{reason: string, flag: *, given_value: *, expected: Array, operator: *, status: *}|{reason: string, flag: Array, given_value: *, expected: *, operator: string, status: boolean}|{reason: string, flag: Array, given_value: *, expected: *, operator: string, status: *}}
  */
-export const check = ({ context, key, value, options = defaultOptions }: { context: object, key: string, value: any, options: any }) => {
+export const check = (context: object, key: string, value: any, options: any = defaultOptions) => {
   let { operator, path, flag } = buildArg(key);
 
   if (operator === EVERY_STRING || operator === SOME_STRING || operator === NONE_STRING) {
-    return handleComplexRequest({ operator: operator, path: path, flag: flag, context: context, value: value });
+    return handleComplexRequest(operator, path, flag, context, value);
   }
 
   const expectedValue = get(context, path);
@@ -142,7 +133,7 @@ export const check = ({ context, key, value, options = defaultOptions }: { conte
         'given_value': value,
         'expected': expectedValue,
         'flag': flag,
-        'reason': `'Fail because "${expectedValue}" is not ${findInConditions({ condition: operator, target: 'humanlyReadableAs', flag: flag })} "${value}"`,
+        'reason': `'Fail because "${expectedValue}" is not ${findInConditions(operator, 'humanlyReadableAs', flag)} "${value}"`,
       };
     } else {
       // XXX In the other case, the value is considered as "missing" and a special exception is thrown
@@ -157,7 +148,7 @@ export const check = ({ context, key, value, options = defaultOptions }: { conte
     }
   }
 
-  const call = findInConditions({ condition: operator, target: 'call', flag: flag });
+  const call = findInConditions(operator, 'call', flag);
   const status = call(value, expectedValue, flag);
 
   return {
@@ -166,10 +157,6 @@ export const check = ({ context, key, value, options = defaultOptions }: { conte
     'given_value': value,
     'expected': expectedValue,
     'flag': flag,
-    'reason': `${status ? 'Success' : 'Fail'} because "${expectedValue}" is ${status ? '' : 'not'} ${findInConditions({
-      condition: operator,
-      target: 'humanlyReadableAs',
-      flag: flag
-    })} "${value}"`,
+    'reason': `${status ? 'Success' : 'Fail'} because "${expectedValue}" is ${status ? '' : 'not'} ${findInConditions(operator, 'humanlyReadableAs', flag)} "${value}"`,
   };
 };

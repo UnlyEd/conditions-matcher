@@ -1,7 +1,7 @@
-import { CheckError } from './errors';
-import { strict as assert } from 'assert';
+import { deepEqual } from 'assert';
 
-import { IFilter} from "./conditions";
+import { CheckError } from './errors';
+import { IFilter } from "./conditions";
 
 export const SEP_OPERATOR = '__';
 export const SEP_FLAG = '_';
@@ -86,9 +86,10 @@ export const conditions: IFilter = { // TODO rename handlers?
         if (typeof value === typeof expected) {
           if (typeof value === 'object' || typeof expected === 'object') {
             try {
-              assert.deepEqual(value, expected);
+              deepEqual(value, expected);
               return true;
-            } catch (_) {
+            } catch (e) {
+              console.log(e);
               return false;
             }
           }
@@ -107,7 +108,7 @@ export const conditions: IFilter = { // TODO rename handlers?
       'call': (value: any, expected: any, flag: string[]) => {
         if (typeof value === 'object' || typeof expected === 'object') {
           try {
-            assert.deepEqual(value, expected);
+            deepEqual(value, expected);
             return false;
 
           } catch (_) {
