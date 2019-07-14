@@ -64,6 +64,6 @@
   },
   "dependencies": {
     "core-js": "latest",
-    "lodash": "4.17.11"
+    "lodash": "4.17.13"
   }
 }
