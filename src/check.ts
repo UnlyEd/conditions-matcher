@@ -63,10 +63,15 @@ export const buildArg = (rule: string) => {
 };
 
 /**
- * This function handle the every, some and none operator
- * let's take an example as key a receive school_name__every_equal and as value Skema
- * I'll loop in the given context in the "school" object looking for a key named "name" and if the operator match or not
- * I return the appropriate value. This value is push back in an array. When the loop is over
+ * Handles every, some and none operators
+ * Not used for "simple" operators, only for complex ones (for arrays/objects)
+ *
+ * @example TODO retravailler ça, matelos !
+ *  Given a key as "school_name__every_equal"
+ *  Given a value as "Skema"
+ *  The algorithm will first find the "school.name" value, then it'll loop over every value and
+ *
+ * This value is push back in an array. When the loop is over
  * return the result of the array compute by the appropriate function and for every, or for some and none for none.
  *
  * @param operator
