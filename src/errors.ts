@@ -1,5 +1,6 @@
 export class CheckError extends Error {
   public data: any;
+
   constructor(data: any) {
     super(data);
     this.name = 'CheckError';
@@ -9,6 +10,7 @@ export class CheckError extends Error {
 
 export class ValueNotFound extends Error {
   public data: any;
+
   constructor(data: any) {
     super(data);
     this.name = 'ValueNotFound';

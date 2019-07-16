@@ -13,6 +13,7 @@ export interface IFilter {
 interface IOperators {
   [key: string]: any
 }
+
 const operators: IOperators = {
   'AND': and,
   'OR': or,
@@ -142,7 +143,7 @@ export const formatFilters = (filters: IFilter) => {
           filters[key].splice(i - 1, 1);
 
           for (let [rule, expected] of Object.entries(ruleObjectBackup)) {
-            let newObj:IFilter = {};
+            let newObj: IFilter = {};
 
             newObj[rule] = expected;
             filters[key].push(newObj);

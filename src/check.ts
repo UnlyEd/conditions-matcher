@@ -1,8 +1,9 @@
+import { get } from "lodash";
+
 import { conditions, DEFAULT_CONDITION, EVERY_STRING, GET_SEPARATOR, NONE_STRING, SEP_FLAG, SEP_OPERATOR, SEP_PATH, SOME_STRING } from './operators';
 import { CheckError, ValueNotFound } from './errors';
 import { defaultOptions, IFilter } from './conditions';
 
-import { get } from "lodash";
 /**
  * This function allows me to find in the conditions object, the target I'm looking for
  * like the call of the equal operator or the humanlyReadableAs.
@@ -84,7 +85,7 @@ export const handleComplexRequest = (operator: string, path: string, flag: strin
         'given_value': value,
         'expected': expected,
         'flag': flag,
-        'reason': `${status ? 'Success' : 'Fail'} because ${operator} of "${expected}" is ${status ? '' : 'not'} ${findInConditions(flag[0],'humanlyReadableAs', flag)} "${value}"`,
+        'reason': `${status ? 'Success' : 'Fail'} because ${operator} of "${expected}" is ${status ? '' : 'not'} ${findInConditions(flag[0], 'humanlyReadableAs', flag)} "${value}"`,
       };
     }
     match.push({ 'value': value, 'expected': expected[tocheck] });
