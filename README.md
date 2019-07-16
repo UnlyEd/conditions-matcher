@@ -3,6 +3,9 @@
 <!-- toc -->
 
 - [Getting started](#getting-started)
+  * [Installation](#installation)
+  * [Usage](#usage)
+  * [Example](#example)
 - [Contributing](#contributing)
   * [Getting started](#getting-started-1)
   * [Test](#test)
@@ -34,6 +37,51 @@ ES6
 ```js
 import contextMatcher from "@unly/conditions-matcher";
 ```
+
+Then please check the conditions documentation [here](./README-CONDITIONS.md)
+
+### Example
+Simple context:
+```js
+const context = {
+  'name': 'Jean',
+  'age': 42,
+  'address' : {
+    'city' : 'Lyon',
+    'country': 'France'
+  }
+}
+```
+
+Simple filter:
+```js
+const filter = {
+  'AND': [
+    {'name': 'Jean'}, //true Jean === Jean
+    {'age__greaterThan': 40}, //true 42 > 40
+  ]
+}
+```
+
+The matcher will return **true**.
+
+Middle filter:
+```js
+const filter = {
+  'AND': [
+    {
+      'name': 'Jean', //true because Jean === Jean
+      'NOT': [ //true beacause one input is false
+        {'name': 'other-name'}, //false Jean !== other-name
+        {'address_city__in': ['Paris', 'London', 'Lyon']} //true Lyon is in cities array
+      ]
+    }
+  ]
+}
+```
+
+The matcher will return **true**.
+
 
 ---
 
