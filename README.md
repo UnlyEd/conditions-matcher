@@ -1,6 +1,4 @@
-# Library Skeleton
-
-This project is a skeleton for library open source
+# Conditions-matcher
 
 <!-- toc -->
 
@@ -19,22 +17,22 @@ This project is a skeleton for library open source
 
 Using npm :
 ```
-npm i @unly/prisma-algorithm-matcher
+npm i @unly/conditions-matcher
 ```
 Using yarn :
 ```
-yarn add @unly/prisma-algorithm-matcher
+yarn add @unly/conditions-matcher
 ```
 
 ### Usage
 ES5
 ```js
-const contextMatcher = require("@unly/prisma-algorithm-matcher");
+const contextMatcher = require("@unly/conditions-matcher");
 ```
 
 ES6
 ```js
-import checkContextMatchesConditions from "@unly/prisma-algorithm-matcher";
+import checkContextMatchesConditions from "@unly/conditions-matcher";
 ```
 
 ---

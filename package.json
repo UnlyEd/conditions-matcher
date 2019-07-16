@@ -1,6 +1,6 @@
 {
-  "name": "@unly/prisma-algorithm-matcher",
-  "version": "1.0.8",
+  "name": "@unly/conditions-matcher",
+  "version": "1.0.9",
   "description": "Open-source library using Node v8.10",
   "main": "lib/conditions.js",
   "repository": {
