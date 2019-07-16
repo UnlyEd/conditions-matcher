@@ -25,14 +25,14 @@
   "main": "lib/conditions.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UnlyEd/prisma-algorithm-matcher.git"
+    "url": "git+https://github.com/UnlyEd/conditions-matcher.git"
   },
   "author": "unlyEd",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/UnlyEd/prisma-algorithm-matcher/issues"
+    "url": "https://github.com/UnlyEd/conditions-matcher/issues"
   },
-  "homepage": "https://github.com/UnlyEd/prisma-algorithm-matcher",
+  "homepage": "https://github.com/UnlyEd/conditions-matcher",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
