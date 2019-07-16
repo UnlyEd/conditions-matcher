@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import { get, map } from "lodash";
 
 import { conditions, DEFAULT_CONDITION, EVERY_STRING, GET_SEPARATOR, NONE_STRING, SEP_FLAG, SEP_OPERATOR, SEP_PATH, SOME_STRING } from './operators';
 import { CheckError, ValueNotFound } from './errors';
@@ -11,24 +11,24 @@ import { defaultOptions, IFilter } from './conditions';
  * A CheckError is treated as a fatal error, similarly to a native Error.
  * It means something isn't properly configured.
  *
- * @param condition
+ * @param operator
  * @param target
  * @param flags
  * @return {*}
  */
-export const findInConditions = (condition: string, target: string, flags: string[]) => {
+export const findInConditions = (operator: string, target: string, flags: string[]) => {
   for (const key in conditions) {
-    if (conditions[key].alias.includes(condition)) {
+    if (conditions[key].alias.includes(operator)) {
       return conditions[key][target];
     }
   }
 
   throw(new CheckError({
     'status': false,
-    'operator': condition,
+    'operator': operator,
     'target': target,
     'flags': flags,
-    'reason': `Error: operator: "${condition}" does not exist or doesn't have "${target}" attribute`,
+    'reason': `Error: operator: "${operator}" does not exist or doesn't have "${target}" attribute`,
   }));
 };
 
@@ -77,14 +77,14 @@ export const buildArg = (rule: string) => {
  * @return {{reason: string, flags: *, given_value: *, expected: Array, operator: *, status: *}}
  */
 export const handleComplexRequest = (operator: string, path: string, flags: string[], context: IFilter, value: any) => {
-  let result: boolean[] = [];
-  let match: IFilter = [];
-  let tab: string[] = path.split('.');
-  const tocheck: any = tab.pop();
-  const expectedTab = get(context, tab.join('.'));
+  let results: boolean[] = [];
+  let matches: IFilter = [];
+  let tmpArray: string[] = path.split('.');
+  const fieldKeyToCheck: any = tmpArray.pop();
+  const resolvedContextFieldValue = get(context, tmpArray.join('.'));
   const call = findInConditions(flags[0], 'call', flags);
 
-  expectedTab.forEach((expected: any) => {
+  map(resolvedContextFieldValue, (expected: any) => {
     if (typeof expected === 'undefined' || typeof value === 'undefined') {
       return {
         'status': false,
@@ -95,17 +95,18 @@ export const handleComplexRequest = (operator: string, path: string, flags: stri
         'reason': `${status ? 'Success' : 'Fail'} because ${operator} of "${expected}" is ${status ? '' : 'not'} ${findInConditions(flags[0], 'humanlyReadableAs', flags)} "${value}"`,
       };
     }
-    match.push({ 'value': value, 'expected': expected[tocheck] });
-    result.push(call(value, expected[tocheck], flags));
+    matches.push({ 'value': value, 'expected': expected[fieldKeyToCheck] });
+    results.push(call(value, expected[fieldKeyToCheck], flags));
   });
-  const status = findInConditions(operator, 'call', flags)(result);
+
+  const status = findInConditions(operator, 'call', flags)(results);
   return {
     'status': status,
     'operator': operator,
     'given_value': value,
-    'expected': match,
+    'expected': matches,
     'flags': flags,
-    'reason': `${status ? 'Success' : 'Fail'} because "${match}" is ${status ? '' : 'not'} ${findInConditions(operator, 'humanlyReadableAs', flags)} "${value}"`,
+    'reason': `${status ? 'Success' : 'Fail'} because "${matches}" is ${status ? '' : 'not'} ${findInConditions(operator, 'humanlyReadableAs', flags)} "${value}"`,
   };
 };
 
