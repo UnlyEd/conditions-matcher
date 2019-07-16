@@ -62,22 +62,22 @@ const checkContextMatchesConditions = (filters: IFilter, context: object, option
   let ignoredConditionsArr: object[] = [];
   filters = formatFilters(Object.assign({}, filters));
 
-  for (let [key, value] of Object.entries(filters)) {
-    if (key in operators) {
+  for (let [rule, value] of Object.entries(filters)) {
+    if (rule in operators) {
       value.forEach((condition: object[]) => {
         const { status, ignoredConditions } = checkContextMatchesConditions(condition, context, options);
 
         if (status === false && ignoredConditions !== null) {
           ignoredConditionsArr.push(ignoredConditions);
         } else {
-          returnValues[key] = returnValues[key] || [];
-          returnValues[key].push(status);
+          returnValues[rule] = returnValues[rule] || [];
+          returnValues[rule].push(status);
         }
       });
     } else {
       try {
-        const result = check(context, key, value, options);
-        filters[key + '__result'] = result;
+        const result = check(context, rule, value, options);
+        filters[rule + '__result'] = result;
 
         if (result['status'] === false) {
           return {
