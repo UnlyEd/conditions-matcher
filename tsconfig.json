@@ -7,6 +7,11 @@
     "strict": true,
     "removeComments": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.*"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.test.*"
+  ],
+  "esModuleInterop": false
 }
