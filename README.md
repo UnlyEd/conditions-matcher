@@ -32,7 +32,7 @@ const contextMatcher = require("@unly/conditions-matcher");
 
 ES6
 ```js
-import checkContextMatchesConditions from "@unly/conditions-matcher";
+import contextMatcher from "@unly/conditions-matcher";
 ```
 
 ---

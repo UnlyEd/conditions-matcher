@@ -2,6 +2,26 @@
   "name": "@unly/conditions-matcher",
   "version": "1.0.9",
   "description": "Open-source library using Node v8.10",
+  "scripts": {
+    "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test\"'",
+    "build": "tsc",
+    "clean": "rm -rf lib/",
+    "lint": "esw src/ --fix --watch",
+    "lint:once": "eslint src/ --fix",
+    "preversion": "yarn lint:once && yarn test:once && yarn doc:toc && yarn run doc:api",
+    "postversion": "git push && git push --tags",
+    "release": "yarn bump --prompt --commit --tag --push",
+    "releaseAndPublish": "yarn release && npm publish",
+    "doc:api": "jsdoc2md src/*.js > API.md",
+    "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
+    "test": "yarn build && NODE_ENV=test jest --watch",
+    "test:once": "yarn build && NODE_ENV=test jest",
+    "test:coverage": "yarn build && NODE_ENV=test jest --coverage"
+  },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node"
+  },
   "main": "lib/conditions.js",
   "repository": {
     "type": "git",
@@ -16,26 +36,6 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
-  },
-  "jest": {
-    "verbose": true,
-    "testEnvironment": "node"
-  },
-  "scripts": {
-    "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test\"'",
-    "build": "tsc",
-    "clean": "rm -rf lib/",
-    "lint": "esw src/ --fix --watch",
-    "lint:once": "eslint src/ --fix",
-    "preversion": "yarn lint:once && yarn test:once && yarn doc:toc && yarn run doc:api",
-    "postversion": "git push && git push --tags",
-    "release": "yarn bump --prompt --commit --tag --push",
-    "releaseAndPublish": "yarn release && npm publish",
-    "doc:api": "jsdoc2md src/*.js > API.md",
-    "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
-    "test": "NODE_ENV=test jest --watch",
-    "test:once": "NODE_ENV=test jest",
-    "test:coverage": "NODE_ENV=test jest --coverage"
   },
   "files": [
     "lib"
