@@ -1,0 +1,17 @@
+{
+  "name": "example-simple-match",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r esm ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@unly/conditions-matcher": "1.0.9",
+    "esm": "3.2.25",
+    "nodemon": "1.19.1"
+  }
+}
