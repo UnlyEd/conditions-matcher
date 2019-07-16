@@ -15,4 +15,6 @@ phases:
   build:
     commands:
       - yarn test:once
+  post_build:
+    finally:
       - slack-codebuild
