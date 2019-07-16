@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/prisma-algorithm-matcher.iml" filepath="$PROJECT_DIR$/.idea/prisma-algorithm-matcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/conditions-matcher.iml" filepath="$PROJECT_DIR$/.idea/conditions-matcher.iml" />
     </modules>
   </component>
 </project>
