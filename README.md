@@ -65,6 +65,8 @@ const filter = {
 
 The matcher will return **true**.
 
+---
+
 Middle filter:
 ```js
 const filter = {
