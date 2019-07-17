@@ -16,10 +16,10 @@
     "release": "yarn bump --prompt --commit --tag --push",
     "releaseAndPublish": "yarn release && npm publish",
     "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
-    "test": "yarn build && NODE_ENV=test jest --watch",
+    "test": "yarn build:once && NODE_ENV=test jest --watch",
     "test:simple": "NODE_ENV=test jest --watch",
-    "test:once": "yarn build && NODE_ENV=test jest",
-    "test:coverage": "yarn build && NODE_ENV=test jest --coverage"
+    "test:once": "yarn build:once && NODE_ENV=test jest",
+    "test:coverage": "yarn build:once && NODE_ENV=test jest --coverage"
   },
   "main": "lib/conditions.js",
   "repository": {
@@ -62,6 +62,6 @@
     "version-bump-prompt": "4.2.2"
   },
   "dependencies": {
-    "lodash": "4.17.13"
+    "lodash": "4.17.14"
   }
 }
