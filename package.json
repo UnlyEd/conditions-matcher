@@ -4,7 +4,8 @@
   "description": "Open-source library using Node v8.10",
   "scripts": {
     "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test:simple\"'",
-    "build": "tsc",
+    "build": "tsc -w",
+    "build:once": "tsc",
     "clean": "rm -rf lib/",
     "lint": "esw src/ --fix --watch",
     "lint:once": "eslint src/ --fix",
