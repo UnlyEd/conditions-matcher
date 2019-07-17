@@ -2,24 +2,39 @@ import { check } from './check';
 import { and, not, or } from './operators';
 import { CheckError } from './errors';
 
+/**
+ * Interface is used to collect return values then to be sent to a logical operator
+ */
 interface IReturnValuesType {
   [key: string]: boolean[]
 }
 
+/**
+ * Basic interface to use dynamique objects, like : user["name"] = "Toto"
+ */
 export interface IFilter {
   [key: string]: any
 }
 
-interface IOperators {
+/**
+ * Interface which contain a pair of a string and function to callback
+ */
+interface ILogicalOperators {
   [key: string]: any
 }
 
-const operators: IOperators = {
+/**
+ * Global object containing all logical operators handled
+ */
+const logicalOperators: ILogicalOperators = {
   'AND': and,
   'OR': or,
   'NOT': not,
 };
 
+/**
+ * Default options passed to the matching checker
+ */
 export const defaultOptions = {
   'strictMatch': false,
 };
@@ -59,38 +74,35 @@ export const defaultOptions = {
  */
 const checkContextMatchesConditions = (filters: IFilter, context: object, options: object = defaultOptions) => {
   let returnValues: IReturnValuesType = {};
-  let ignoredConditionsArr: object[] = [];
-  filters = formatFilters(Object.assign({}, filters));
+  let ignoredConditionsCollection: object[] = [];
+  const refactoredFilters: IFilter = formatFilters(Object.assign({}, filters));
 
-  for (let [key, value] of Object.entries(filters)) {
-    if (key in operators) {
-      value.forEach((condition: object[]) => {
+  for (let [logicalOperator, conditions] of Object.entries(refactoredFilters)) {
+    if (logicalOperator in logicalOperators) {
+      conditions.forEach((condition: object[]) => {
         const { status, ignoredConditions } = checkContextMatchesConditions(condition, context, options);
 
         if (status === false && ignoredConditions !== null) {
-          ignoredConditionsArr.push(ignoredConditions);
+          ignoredConditionsCollection.push(ignoredConditions);
         } else {
-          returnValues[key] = returnValues[key] || [];
-          returnValues[key].push(status);
+          returnValues[logicalOperator] = returnValues[logicalOperator] || [];
+          returnValues[logicalOperator].push(status);
         }
       });
     } else {
       try {
-        const result = check(context, key, value, options);
-        filters[key + '__result'] = result;
+        const checkResult = check(context, logicalOperator, conditions, options);
+        refactoredFilters[logicalOperator + '__result'] = checkResult;
 
-        if (result['status'] === false) {
+        if (checkResult['status'] === false) {
           return {
-            'status': result['status'],
-            'reason': result['reason'],
-            'ignoredConditions': ignoredConditionsArr.length > 0 ? ignoredConditionsArr : null,
+            'status': checkResult['status'],
+            'reason': checkResult['reason'],
+            'ignoredConditions': ignoredConditionsCollection.length > 0 ? ignoredConditionsCollection : null,
           };
         }
       } catch (e) {
-        if (e.name === 'CheckError') {
-          return { 'status': false, 'ignoredConditions': e.data };
-        }
-        if (e.name === 'ValueNotFound') {
+        if (e.name === 'CheckError' || e.name === 'ValueNotFound') {
           return { 'status': false, 'ignoredConditions': e.data };
         } else {
           throw e;
@@ -100,18 +112,18 @@ const checkContextMatchesConditions = (filters: IFilter, context: object, option
   }
 
   if (Object.entries(returnValues).length === 0 && returnValues.constructor === Object) {
-    return { 'status': true, 'ignoredConditions': ignoredConditionsArr.length > 0 ? ignoredConditionsArr : null };
+    return { 'status': true, 'ignoredConditions': ignoredConditionsCollection.length > 0 ? ignoredConditionsCollection : null };
   }
 
   let operatorsValues = [];
-  for (let [key, value] of Object.entries(returnValues)) {
-    operatorsValues.push(operators[key](value));
+  for (let [logicalOperator, isValidConditions] of Object.entries(returnValues)) {
+    operatorsValues.push(logicalOperators[logicalOperator](isValidConditions));
   }
-  const returnStatus = and(operatorsValues);
+  const isValid = and(operatorsValues);
   return {
-    'status': returnStatus,
-    'ignoredConditions': ignoredConditionsArr.length > 0 ? ignoredConditionsArr : null,
-    'reason': !returnStatus ? 'Top-level "AND" condition returned false' : null,
+    'status': isValid,
+    'ignoredConditions': ignoredConditionsCollection.length > 0 ? ignoredConditionsCollection : null,
+    'reason': !isValid ? 'Top-level "AND" condition returned false' : null,
   };
 };
 
@@ -134,19 +146,19 @@ const checkContextMatchesConditions = (filters: IFilter, context: object, option
  * @returns {array}
  */
 export const formatFilters = (filters: IFilter) => {
-  for (let [key, value] of Object.entries(filters)) {
-    if (key in operators) {
-      for (let i = 0; i < value.length; i++) {
+  for (let [logicalOperator, conditions] of Object.entries(filters)) {
+    if (logicalOperator in logicalOperators) {
+      for (let i = 0; i < conditions.length; i++) {
 
-        if (Object.keys(value[i]).length > 1) {
-          const ruleObjectBackup = value[i];
-          filters[key].splice(i - 1, 1);
-
+        if (Object.keys(conditions[i]).length > 1) {
+          const ruleObjectBackup = conditions[i];
+          filters[logicalOperator].splice(i - 1, 1);
+ 
           for (let [rule, expected] of Object.entries(ruleObjectBackup)) {
             let newObj: IFilter = {};
 
             newObj[rule] = expected;
-            filters[key].push(newObj);
+            filters[logicalOperator].push(newObj);
           }
         }
       }
