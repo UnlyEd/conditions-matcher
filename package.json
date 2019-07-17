@@ -3,7 +3,7 @@
   "version": "1.0.9",
   "description": "Open-source library using Node v8.10",
   "scripts": {
-    "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test\"'",
+    "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test:simple\"'",
     "build": "tsc",
     "clean": "rm -rf lib/",
     "lint": "esw src/ --fix --watch",
@@ -15,6 +15,7 @@
     "doc:api": "jsdoc2md src/*.js > API.md",
     "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
     "test": "yarn build && NODE_ENV=test jest --watch",
+    "test:simple": "NODE_ENV=test jest --watch",
     "test:once": "yarn build && NODE_ENV=test jest",
     "test:coverage": "yarn build && NODE_ENV=test jest --coverage"
   },
