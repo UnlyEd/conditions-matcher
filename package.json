@@ -1,6 +1,6 @@
 {
   "name": "@unly/conditions-matcher",
-  "version": "1.0.9",
+  "version": "1.0.10-beta.0",
   "description": "Open-source library using Node v8.10",
   "scripts": {
     "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test:simple\"'",
@@ -8,11 +8,10 @@
     "clean": "rm -rf lib/",
     "lint": "esw src/ --fix --watch",
     "lint:once": "eslint src/ --fix",
-    "preversion": "yarn lint:once && yarn test:once && yarn doc:toc && yarn run doc:api",
+    "preversion": "yarn lint:once && yarn test:once && yarn doc:toc",
     "postversion": "git push && git push --tags",
     "release": "yarn bump --prompt --commit --tag --push",
     "releaseAndPublish": "yarn release && npm publish",
-    "doc:api": "jsdoc2md src/*.js > API.md",
     "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
     "test": "yarn build && NODE_ENV=test jest --watch",
     "test:simple": "NODE_ENV=test jest --watch",
@@ -57,10 +56,10 @@
     "jsdoc-to-markdown": "4.0.1",
     "markdown-toc": "1.2.0",
     "ts-jest": "24.0.2",
-    "typescript": "3.5.2"
+    "typescript": "3.5.2",
+    "version-bump-prompt": "4.2.2"
   },
   "dependencies": {
-    "core-js": "latest",
     "lodash": "4.17.13"
   }
 }
