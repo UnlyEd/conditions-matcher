@@ -8,8 +8,11 @@ Check which conditions
   * [Installation](#installation)
   * [Usage](#usage)
 - [Contributing](#contributing)
-  * [Getting started](#getting-started-1)
+  * [Working locally](#working-locally)
   * [Test](#test)
+  * [Versions](#versions)
+    + [SemVer](#semver)
+    + [Release a new version](#release-a-new-version)
   * [Releasing and publishing](#releasing-and-publishing)
 - [License](#license)
 
@@ -48,7 +51,7 @@ Then please check the conditions documentation [here](./README-CONDITIONS.md)
 
 We gladly accept PRs, but please open an issue first so we can discuss it beforehand.
 
-### Getting started
+### Working locally
 
 ```
 yarn start # Shortcut - Runs linter + build + tests in concurrent mode (watch mode)
@@ -65,8 +68,8 @@ yarn test
 
 ```
 yarn test # Run all tests, interactive and watch mode
-yarn test:once
-yarn test:coverage
+yarn test:once # Used for CI/CD
+yarn test:coverage # Generate coverage report
 ```
 
 ### Versions
