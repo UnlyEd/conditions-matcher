@@ -3,6 +3,7 @@ import { check } from './check';
 const context = {
   'school': {
     'name': 'EPITECH',
+    'name__flags': ["i"],
     'averageGPA': 2.5,
     'averageGPAString': '2.5',
     'address': {
@@ -20,6 +21,7 @@ const context = {
     },
     {
       name: 'UNLY',
+      name__flags: [],
       number: 42,
     },
     {
@@ -31,6 +33,9 @@ const context = {
 
 describe('utils/check', () => {
   describe('test of empty or inexistent value in context or filter', () => {
+    test('', async () => {
+      check(context, 'partner_name__some_eq', 'UNLy');
+    });
     test('inexistent value', async () => {
       try {
         check(context, 'school_empty__eq', 'empty');
@@ -62,9 +67,6 @@ describe('utils/check', () => {
     test(`startsWith operator should be false`, async () => {
       expect(check(context, 'school_name__startsWith', 'unly').status).toBe(false);
     });
-    test(`startsWith operator with i flag`, async () => {
-      expect(check(context, 'school_name__startsWith_i', 'epi').status).toBe(true);
-    });
   });
 
   describe('endsWith test', () => {
@@ -74,9 +76,6 @@ describe('utils/check', () => {
     test(`endsWith operator should not match`, async () => {
       expect(check(context, 'school_name__endsWith', 'unly').status).toBe(false);
     });
-    test(`endsWith operator with i flag`, async () => {
-      expect(check(context, 'school_name__endsWith_i', 'tech').status).toBe(true);
-    });
   });
 
   describe('equal test', () => {
@@ -85,8 +84,6 @@ describe('utils/check', () => {
     });
     test(`equal test with array === array`, async () => {
       const tmp = check(context, 'list__eq', [42, 24]);
-      console.log(tmp)
-
       expect(tmp.status).toBe(true);
     });
     test(`equal test with number === string`, async () => {
@@ -99,17 +96,11 @@ describe('utils/check', () => {
         'number': '221B',
       }).status).toBe(true);
     });
-    test(`equal test with string === string and flag i`, async () => {
-      expect(check(context, 'school_name__eq_i', 'epitech').status).toBe(true);
-    });
   });
 
   describe('not test', () => {
     test(`not operator`, async () => {
       expect(check(context, 'school_name__ne', 'UNLY').status).toBe(true);
-    });
-    test(`not operator with i flag`, async () => {
-      expect(check(context, 'school_name__ne_i', 'epitech').status).toBe(false);
     });
   });
 
@@ -119,12 +110,6 @@ describe('utils/check', () => {
     });
     test(`contains operator with string`, async () => {
       expect(check(context, 'school_name__in', 'TECH').status).toBe(true);
-    });
-    test(`contains operator with i flag with string`, async () => {
-      expect(check(context, 'school_name__in_i', 'tech').status).toBe(true);
-    });
-    test(`contains operator with i flag`, async () => {
-      expect(check(context, 'school_name__in_i', ['UNLY', 'epitech']).status).toBe(true);
     });
     test(`contains operator with bool`, async () => {
       expect(check(context, 'school_isOpen__in', [true, 'epitech']).status).toBe(true);
@@ -139,7 +124,9 @@ describe('utils/check', () => {
 
   describe('not contains test', () => {
     test(`not contains test`, async () => {
-      expect(check(context, 'school_name__nin', ['EPITECH', 'UNLY']).status).toBe(false);
+      const oui = check(context, 'school_name__nin', ['EPITECH', 'UNLY']);
+      console.log(oui)
+      expect(oui.status).toBe(false);
     });
     test(`not contains test should be false`, async () => {
       expect(check(context, 'school_name__nin', ['STUDYLINK', 'UNLY']).status).toBe(true);
