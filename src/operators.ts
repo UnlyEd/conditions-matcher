@@ -51,9 +51,9 @@ export const conditions: IFilter = { // TODO rename handlers?
 
   'startsWith': {
     'alias': ['startsWith', 'sw'],
-    'call': (value: any, expected: any, flag: string[]) => {
+    'call': (value: any, expected: any, flags: string[]) => {
       if (typeof value === 'string' && typeof expected === 'string') {
-        if (flag.includes('i')) {
+        if (flags.includes('i')) {
           const tmp = expected.toLowerCase();
           return tmp.startsWith(value.toLowerCase());
         }
@@ -66,9 +66,9 @@ export const conditions: IFilter = { // TODO rename handlers?
 
   'endsWith': {
     'alias': ['endsWith', 'ew'],
-    'call': (value: any, expected: any, flag: string[]) => {
+    'call': (value: any, expected: any, flags: string[]) => {
       if (typeof value === 'string' && typeof expected === 'string') {
-        if (flag.includes('i')) {
+        if (flags.includes('i')) {
           const tmp = expected.toLowerCase();
           return tmp.endsWith(value.toLowerCase());
         }
@@ -82,7 +82,7 @@ export const conditions: IFilter = { // TODO rename handlers?
   'equals':
     {
       'alias': ['equals', 'eq'],
-      'call': (value: any, expected: any, flag: string[]) => {
+      'call': (value: any, expected: any, flags: string[]) => {
         if (typeof value === typeof expected) {
           if (typeof value === 'object' || typeof expected === 'object') {
             try {
@@ -93,7 +93,7 @@ export const conditions: IFilter = { // TODO rename handlers?
               return false;
             }
           }
-          if (flag.includes('i')) {
+          if (flags.includes('i')) {
             return value.toLowerCase() === expected.toLowerCase();
           }
           return value === expected;
@@ -105,7 +105,7 @@ export const conditions: IFilter = { // TODO rename handlers?
   'notEquals':
     {
       'alias': ['ne', 'notEquals'],
-      'call': (value: any, expected: any, flag: string[]) => {
+      'call': (value: any, expected: any, flags: string[]) => {
         if (typeof value === 'object' || typeof expected === 'object') {
           try {
             deepEqual(value, expected);
@@ -115,7 +115,7 @@ export const conditions: IFilter = { // TODO rename handlers?
             return true;
           }
         }
-        if (flag.includes('i')) {
+        if (flags.includes('i')) {
           return value.toLowerCase() !== expected.toLowerCase();
         }
         return value !== expected;
@@ -126,7 +126,7 @@ export const conditions: IFilter = { // TODO rename handlers?
   'contains':
     {
       'alias': ['contains', 'includes', 'in'],
-      'call': (value: any, expected: any, flag: string[]) => {
+      'call': (value: any, expected: any, flags: string[]) => {
         if (typeof value === 'object' && typeof expected === 'object') {
           for (const el in value) {
             if (expected.hasOwnProperty(el) && (expected[el] !== value[el])) {
@@ -136,12 +136,12 @@ export const conditions: IFilter = { // TODO rename handlers?
           return true;
         }
         if (typeof value === 'string' && typeof expected === 'string') {
-          if (flag.includes('i')) {
+          if (flags.includes('i')) {
             return expected.toLowerCase().search(value.toLowerCase()) >= 0;
           }
           return expected.search(value) >= 0;
         }
-        if (flag.includes('i')) {
+        if (flags.includes('i')) {
           return value.filter((el: string) => el.toLowerCase()).includes(expected.toLowerCase());
         }
         return value.includes(expected);
@@ -152,14 +152,14 @@ export const conditions: IFilter = { // TODO rename handlers?
   'notContains':
     {
       'alias': ['notContains', 'not_includes', 'nin'],
-      'call': (value: any, expected: any, flag: string[]) => {
+      'call': (value: any, expected: any, flags: string[]) => {
         if (typeof value === 'string' && typeof expected === 'string') {
-          if (flag.includes('i')) {
+          if (flags.includes('i')) {
             return expected.toLowerCase().search(value.toLowerCase()) === -1;
           }
           return expected.search(value) === -1;
         }
-        if (flag.includes('i')) {
+        if (flags.includes('i')) {
           return !value.filter((el: string) => el.toLowerCase()).includes(expected.toLowerCase());
         }
         return !value.includes(expected);
@@ -170,7 +170,7 @@ export const conditions: IFilter = { // TODO rename handlers?
   'greaterThan':
     {
       'alias': ['greaterThan', 'gt'],
-      'call': (value: any, expected: any, flag: string[]) => {
+      'call': (value: any, expected: any, flags: string[]) => {
         if (typeof value === 'number' && typeof expected === 'number') {
           return value < expected;
         }
@@ -179,7 +179,7 @@ export const conditions: IFilter = { // TODO rename handlers?
           'operator': 'greaterThan',
           'given_value': value,
           'expected': expected,
-          'flag': flag,
+          'flags': flags,
           'reason': `Error: wrong type: compare ${typeof value} to  ${typeof expected} is not handle`,
         }));
       },
@@ -189,7 +189,7 @@ export const conditions: IFilter = { // TODO rename handlers?
   'greaterThanEquals':
     {
       'alias': ['greaterThanEquals', 'gte'],
-      'call': (value: any, expected: any, flag: string[]) => {
+      'call': (value: any, expected: any, flags: string[]) => {
         if (typeof value === 'number' && typeof expected === 'number') {
           return value <= expected;
         }
@@ -198,7 +198,7 @@ export const conditions: IFilter = { // TODO rename handlers?
           'operator': 'greaterThanEquals',
           'given_value': value,
           'expected': expected,
-          'flag': flag,
+          'flags': flags,
           'reason': `Error: wrong type: compare ${typeof value} to  ${typeof expected} is not handle`,
         }));
       },
@@ -208,7 +208,7 @@ export const conditions: IFilter = { // TODO rename handlers?
   'lessThan':
     {
       'alias': ['lessThan', 'lt'],
-      'call': (value: any, expected: any, flag: string[]) => {
+      'call': (value: any, expected: any, flags: string[]) => {
         if (typeof value === 'number' && typeof expected === 'number') {
           return value > expected;
         }
@@ -217,7 +217,7 @@ export const conditions: IFilter = { // TODO rename handlers?
           'operator': 'lessThan',
           'given_value': value,
           'expected': expected,
-          'flag': flag,
+          'flags': flags,
           'reason': `Error: wrong type: compare ${typeof value} to  ${typeof expected} is not handle`,
         }));
       },
@@ -227,7 +227,7 @@ export const conditions: IFilter = { // TODO rename handlers?
   'lessThanEquals':
     {
       'alias': ['lessequal', 'lte'],
-      'call': (value: any, expected: any, flag: string[]) => {
+      'call': (value: any, expected: any, flags: string[]) => {
         if (typeof value === 'number' && typeof expected === 'number') {
           return value >= expected;
         }
@@ -236,7 +236,7 @@ export const conditions: IFilter = { // TODO rename handlers?
           'operator': 'lessThanEquals',
           'given_value': value,
           'expected': expected,
-          'flag': flag,
+          'flags': flags,
           'reason': `Error: wrong type: compare ${typeof value} to  ${typeof expected} is not handle`,
         }));
       },

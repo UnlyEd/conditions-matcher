@@ -1,14 +1,18 @@
 # Conditions-matcher
 
+Check which conditions
+
 <!-- toc -->
 
 - [Getting started](#getting-started)
   * [Installation](#installation)
   * [Usage](#usage)
-  * [Example](#example)
 - [Contributing](#contributing)
-  * [Getting started](#getting-started-1)
+  * [Working locally](#working-locally)
   * [Test](#test)
+  * [Versions](#versions)
+    + [SemVer](#semver)
+    + [Release a new version](#release-a-new-version)
   * [Releasing and publishing](#releasing-and-publishing)
 - [License](#license)
 
@@ -38,52 +42,8 @@ ES6
 import contextMatcher from "@unly/conditions-matcher";
 ```
 
+See the [examples](./examples) for more details.
 Then please check the conditions documentation [here](./README-CONDITIONS.md)
-
-### Example
-Simple context:
-```js
-const context = {
-  'name': 'Jean',
-  'age': 42,
-  'address' : {
-    'city' : 'Lyon',
-    'country': 'France'
-  }
-}
-```
-
-Simple filter:
-```js
-const filter = {
-  'AND': [
-    {'name': 'Jean'}, //true Jean === Jean
-    {'age__greaterThan': 40}, //true 42 > 40
-  ]
-}
-```
-
-The matcher will return **true**.
-
----
-
-Middle filter:
-```js
-const filter = {
-  'AND': [
-    {
-      'name': 'Jean', //true because Jean === Jean
-      'NOT': [ //true beacause one input is false
-        {'name': 'other-name'}, //false Jean !== other-name
-        {'address_city__in': ['Paris', 'London', 'Lyon']} //true Lyon is in cities array
-      ]
-    }
-  ]
-}
-```
-
-The matcher will return **true**.
-
 
 ---
 
@@ -91,7 +51,7 @@ The matcher will return **true**.
 
 We gladly accept PRs, but please open an issue first so we can discuss it beforehand.
 
-### Getting started
+### Working locally
 
 ```
 yarn start # Shortcut - Runs linter + build + tests in concurrent mode (watch mode)
@@ -103,13 +63,42 @@ yarn build
 yarn test
 ```
 
+
 ### Test
 
 ```
 yarn test # Run all tests, interactive and watch mode
-yarn test:once
-yarn test:coverage
+yarn test:once # Used for CI/CD
+yarn test:coverage # Generate coverage report
 ```
+
+### Versions
+
+#### SemVer
+
+We use Semantic Versioning for this project: https://semver.org/. (`vMAJOR.MINOR.PATCH`: `v1.0.1`)
+
+- Major version: Must be changed when Breaking Changes are made (public API isn't backward compatible).
+  - A function has been renamed/removed from the public API
+  - Something has changed that will cause the app to behave much differently with the same configuration
+- Minor version: Must be changed when a new feature is added or updated (without breaking change nor behavioral change)
+- Patch version: Must be changed when any change is made that isn't either Major nor Minor. (Misc, doc, etc.)
+
+#### Release a new version
+
+> Note: You should write the CHANGELOG.md doc before releasing the version. 
+This way, it'll be included in the same commit as the built files and version update
+
+Then, release a new version:
+
+- `yarn run release`
+
+This command will prompt you for the version to update to, create a git tag, build the files and commit/push everything automatically.
+
+> Don't forget we are using SemVer, please follow our SemVer rules.
+
+**Pro hint**: use `beta` tag if you're in a work-in-progress (or unsure) to avoid releasing WIP versions that looks legit
+
 
 ### Releasing and publishing
 

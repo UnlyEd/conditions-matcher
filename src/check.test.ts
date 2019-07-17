@@ -183,5 +183,12 @@ describe('utils/check', () => {
     test(`none test`, async () => {
       expect(check(context, 'partner_name__none_eq', 'fake_name').status).toBe(true);
     });
+    // Check with unexpected input (not array)
+    test(`none test`, async () => {
+      expect(check(context, 'school_name__every_eq', 'fake_name').status).toBe(false);
+    });
+    test(`none test`, async () => {
+      expect(check(context, 'school_name__none_eq', 'fake_name').status).toBe(true);
+    });
   });
 });
