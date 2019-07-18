@@ -3,7 +3,6 @@ import { check } from './check';
 const context = {
   'school': {
     'name': 'EPITECH',
-    'name__flags': ["i"],
     'averageGPA': 2.5,
     'averageGPAString': '2.5',
     'address': {
