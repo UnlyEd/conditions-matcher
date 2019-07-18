@@ -1,9 +1,6 @@
 import { deepStrictEqual } from 'assert';
-import { map } from "lodash";
-
 import { CheckError } from './errors';
 import { IFilter } from "./conditions";
-import { type } from "os";
 
 export const SEP_OPERATOR = '__';
 export const SEP_BETWEEN_OPERATOR = '_';
@@ -86,14 +83,12 @@ export const conditions: IFilter = { // TODO rename handlers?
     {
       'alias': ['equals', 'eq'],
       'call': (value: any, contextValue: any, flags: string[]) => {
-        console.log(value, contextValue, flags)
         if (typeof value === typeof contextValue) {
           if (typeof value === 'object' || typeof contextValue === 'object') {
             try {
               deepStrictEqual(value, contextValue);
               return true;
             } catch (e) {
-              console.log(e);
               return false;
             }
           }
@@ -157,33 +152,25 @@ export const conditions: IFilter = { // TODO rename handlers?
     {
       'alias': ['notContains', 'not_includes', 'nin'],
       'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === 'object' && typeof contextValue === 'object') {
+
+          for (const el in value) {
+            if (contextValue.hasOwnProperty(el) && (contextValue[el] !== value[el])) {
+              return true;
+            }
+          }
+          return false;
+        }
         if (typeof value === 'string' && typeof contextValue === 'string') {
           if (flags.includes('i')) {
             return contextValue.toLowerCase().search(value.toLowerCase()) === -1;
           }
-          return contextValue.search(value) === -1;
+          return contextValue.search(value) >= 0;
         }
-        if (typeof value === 'object') {
-          if (flags.includes('i')) {
-            return !value.map((el: any) => {
-              if (typeof el === 'string') {
-                return el.toLowerCase();
-              }
-              return el;
-            }).includes(contextValue.toLowerCase());
-          } else {
-            return !value.includes(contextValue);
-          }
+        if (flags.includes('i')) {
+          return !value.filter((el: string) => el.toLowerCase()).includes(contextValue.toLowerCase());
         }
-        throw(new CheckError({
-          'status': false,
-          'operator': 'notContains',
-          'given_value': value,
-          'contextValue': contextValue,
-          'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
-        }));
-
+        return !value.includes(contextValue);
       },
       'humanlyReadableAs': 'not in',
     },

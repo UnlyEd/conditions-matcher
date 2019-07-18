@@ -44,6 +44,7 @@ describe('utils/check', () => {
       }
     });
   });
+
   describe('error test', () => {
     test(`operator doesn't exist`, async () => {
       try {
@@ -54,6 +55,7 @@ describe('utils/check', () => {
       }
     });
   });
+
   describe('simple test', () => {
     test(`should match it's a simple test without operator`, async () => {
       expect(check(context, 'school_name', 'EPITECH').status).toBe(true);
@@ -124,9 +126,7 @@ describe('utils/check', () => {
 
   describe('not contains test', () => {
     test(`not contains test`, async () => {
-      const oui = check(context, 'school_name__nin', ['EPITECH', 'UNLY']);
-      console.log(oui)
-      expect(oui.status).toBe(false);
+      expect(check(context, 'school_name__nin', ['EPITECH', 'UNLY']).status).toBe(false);
     });
     test(`not contains test should be false`, async () => {
       expect(check(context, 'school_name__nin', ['STUDYLINK', 'UNLY']).status).toBe(true);
@@ -178,4 +178,53 @@ describe('utils/check', () => {
       expect(check(context, 'school_name__none_eq', 'fake_name').status).toBe(true);
     });
   });
+
+  describe('test flags', ()=>{
+    const context = {
+      'school': {
+        'name': 'EPITECH',
+        'name__flags': ["i"],
+        'averageGPA': 2.5,
+        'averageGPAString': '2.5',
+        'address': {
+          'street': 'Baker Street',
+          'number': '221B',
+          'city': 'London',
+        },
+        'isOpen': true,
+      },
+      'list': [42, 24],
+      'partner': [
+        {
+          name: 'banque',
+          name__flag:['i'],
+          number: 42,
+        },
+        {
+          name: 'UNLY',
+          name__flags: [],
+          number: 42,
+        },
+        {
+          name: 'studylink',
+          number: 42,
+        },
+      ],
+    };
+    test('equal i flag', async ()=>{
+      expect(check(context, "school_name__eq", "epitech").status).toBe(true)
+    });
+    test('startsWith i flag', async ()=>{
+      expect(check(context, "school_name__sw", "epi").status).toBe(true)
+    });
+    test('endsWith i flag', async ()=>{
+      expect(check(context, "school_name__ew", "tech").status).toBe(true)
+    });
+    test('contains i flag', async ()=>{
+      expect(check(context, "school_name__in", ["epitech"]).status).toBe(true)
+    });
+    test('nocontains i flag', async ()=>{
+      expect(check(context, "school_name__nin", ["epitech"]).status).toBe(false)
+    });
+  })
 });
