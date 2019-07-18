@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    SLACK_WEBHOOK_URL=https: "//hooks.slack.com/services/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"
+    SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
     CODEBUILD_NOTIFY_ONLY_IF_FAIL: 1
 
 phases:
