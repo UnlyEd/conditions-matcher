@@ -4,13 +4,13 @@ import {
   conditions,
   DEFAULT_CONDITION,
   EVERY_STRING,
+  FLAGS_INDICATOR,
   GET_SEPARATOR,
   NONE_STRING,
   SEP_BETWEEN_OPERATOR,
   SEP_OPERATOR,
   SEP_PATH,
-  SOME_STRING,
-  FLAGS_INDICATOR
+  SOME_STRING
 } from './operators';
 import { CheckError, ValueNotFound } from './errors';
 import { defaultOptions, IFilter } from './conditions';

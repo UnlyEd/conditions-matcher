@@ -178,7 +178,7 @@ describe('utils/check', () => {
     });
   });
 
-  describe('test flags', ()=>{
+  describe('test flags', () => {
     const context = {
       'school': {
         'name': 'EPITECH',
@@ -196,7 +196,7 @@ describe('utils/check', () => {
       'partner': [
         {
           name: 'banque',
-          name__flag:['i'],
+          name__flag: ['i'],
           number: 42,
         },
         {
@@ -210,19 +210,19 @@ describe('utils/check', () => {
         },
       ],
     };
-    test('equal i flag', async ()=>{
+    test('equal i flag', async () => {
       expect(check(context, "school_name__eq", "epitech").status).toBe(true)
     });
-    test('startsWith i flag', async ()=>{
+    test('startsWith i flag', async () => {
       expect(check(context, "school_name__sw", "epi").status).toBe(true)
     });
-    test('endsWith i flag', async ()=>{
+    test('endsWith i flag', async () => {
       expect(check(context, "school_name__ew", "tech").status).toBe(true)
     });
-    test('contains i flag', async ()=>{
+    test('contains i flag', async () => {
       expect(check(context, "school_name__in", ["epitech"]).status).toBe(true)
     });
-    test('nocontains i flag', async ()=>{
+    test('nocontains i flag', async () => {
       expect(check(context, "school_name__nin", ["epitech"]).status).toBe(false)
     });
   })
