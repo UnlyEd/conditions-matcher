@@ -1,5 +1,5 @@
-import { and, not, or } from '../lib/operators';
-import { formatFilters } from '../lib/conditions';
+import { and, not, or } from './operators';
+import { formatFilters } from './conditions';
 
 /*
   TODO
