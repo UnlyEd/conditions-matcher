@@ -1,16 +1,16 @@
-import { deepEqual } from 'assert';
-
+import { deepStrictEqual } from 'assert';
 import { CheckError } from './errors';
 import { IFilter } from "./conditions";
 
 export const SEP_OPERATOR = '__';
-export const SEP_FLAG = '_';
+export const SEP_BETWEEN_OPERATOR = '_';
 export const SEP_PATH = '_';
 export const DEFAULT_CONDITION = 'equals';
 export const GET_SEPARATOR = '.';
 export const EVERY_STRING = 'every';
 export const SOME_STRING = 'some';
 export const NONE_STRING = 'none';
+export const FLAGS_INDICATOR = "__flags";
 
 export const and = (values: boolean[]) => {
   return values.filter(returnValue => !returnValue).length === 0;
@@ -51,13 +51,13 @@ export const conditions: IFilter = { // TODO rename handlers?
 
   'startsWith': {
     'alias': ['startsWith', 'sw'],
-    'call': (value: any, expected: any, flags: string[]) => {
-      if (typeof value === 'string' && typeof expected === 'string') {
+    'call': (value: any, contextValue: any, flags: string[]) => {
+      if (typeof value === 'string' && typeof contextValue === 'string') {
         if (flags.includes('i')) {
-          const tmp = expected.toLowerCase();
+          const tmp = contextValue.toLowerCase();
           return tmp.startsWith(value.toLowerCase());
         }
-        return expected.startsWith(value);
+        return contextValue.startsWith(value);
       }
       return false;
     },
@@ -66,13 +66,13 @@ export const conditions: IFilter = { // TODO rename handlers?
 
   'endsWith': {
     'alias': ['endsWith', 'ew'],
-    'call': (value: any, expected: any, flags: string[]) => {
-      if (typeof value === 'string' && typeof expected === 'string') {
+    'call': (value: any, contextValue: any, flags: string[]) => {
+      if (typeof value === 'string' && typeof contextValue === 'string') {
         if (flags.includes('i')) {
-          const tmp = expected.toLowerCase();
+          const tmp = contextValue.toLowerCase();
           return tmp.endsWith(value.toLowerCase());
         }
-        return expected.endsWith(value);
+        return contextValue.endsWith(value);
       }
       return false;
     },
@@ -82,21 +82,20 @@ export const conditions: IFilter = { // TODO rename handlers?
   'equals':
     {
       'alias': ['equals', 'eq'],
-      'call': (value: any, expected: any, flags: string[]) => {
-        if (typeof value === typeof expected) {
-          if (typeof value === 'object' || typeof expected === 'object') {
+      'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === typeof contextValue) {
+          if (typeof value === 'object' || typeof contextValue === 'object') {
             try {
-              deepEqual(value, expected);
+              deepStrictEqual(value, contextValue);
               return true;
             } catch (e) {
-              console.log(e);
               return false;
             }
           }
           if (flags.includes('i')) {
-            return value.toLowerCase() === expected.toLowerCase();
+            return value.toLowerCase() === contextValue.toLowerCase();
           }
-          return value === expected;
+          return value === contextValue;
         }
         return false;
       },
@@ -105,10 +104,10 @@ export const conditions: IFilter = { // TODO rename handlers?
   'notEquals':
     {
       'alias': ['ne', 'notEquals'],
-      'call': (value: any, expected: any, flags: string[]) => {
-        if (typeof value === 'object' || typeof expected === 'object') {
+      'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === 'object' || typeof contextValue === 'object') {
           try {
-            deepEqual(value, expected);
+            deepStrictEqual(value, contextValue);
             return false;
 
           } catch (_) {
@@ -116,9 +115,9 @@ export const conditions: IFilter = { // TODO rename handlers?
           }
         }
         if (flags.includes('i')) {
-          return value.toLowerCase() !== expected.toLowerCase();
+          return value.toLowerCase() !== contextValue.toLowerCase();
         }
-        return value !== expected;
+        return value !== contextValue;
       },
       'humanlyReadableAs': 'not',
     },
@@ -126,25 +125,25 @@ export const conditions: IFilter = { // TODO rename handlers?
   'contains':
     {
       'alias': ['contains', 'includes', 'in'],
-      'call': (value: any, expected: any, flags: string[]) => {
-        if (typeof value === 'object' && typeof expected === 'object') {
+      'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === 'object' && typeof contextValue === 'object') {
           for (const el in value) {
-            if (expected.hasOwnProperty(el) && (expected[el] !== value[el])) {
+            if (contextValue.hasOwnProperty(el) && (contextValue[el] !== value[el])) {
               return false;
             }
           }
           return true;
         }
-        if (typeof value === 'string' && typeof expected === 'string') {
+        if (typeof value === 'string' && typeof contextValue === 'string') {
           if (flags.includes('i')) {
-            return expected.toLowerCase().search(value.toLowerCase()) >= 0;
+            return contextValue.toLowerCase().search(value.toLowerCase()) >= 0;
           }
-          return expected.search(value) >= 0;
+          return contextValue.search(value) >= 0;
         }
         if (flags.includes('i')) {
-          return value.filter((el: string) => el.toLowerCase()).includes(expected.toLowerCase());
+          return value.filter((el: string) => el.toLowerCase()).includes(contextValue.toLowerCase());
         }
-        return value.includes(expected);
+        return value.includes(contextValue);
       },
       'humanlyReadableAs': 'in',
     },
@@ -152,17 +151,26 @@ export const conditions: IFilter = { // TODO rename handlers?
   'notContains':
     {
       'alias': ['notContains', 'not_includes', 'nin'],
-      'call': (value: any, expected: any, flags: string[]) => {
-        if (typeof value === 'string' && typeof expected === 'string') {
-          if (flags.includes('i')) {
-            return expected.toLowerCase().search(value.toLowerCase()) === -1;
+      'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === 'object' && typeof contextValue === 'object') {
+
+          for (const el in value) {
+            if (contextValue.hasOwnProperty(el) && (contextValue[el] !== value[el])) {
+              return true;
+            }
           }
-          return expected.search(value) === -1;
+          return false;
+        }
+        if (typeof value === 'string' && typeof contextValue === 'string') {
+          if (flags.includes('i')) {
+            return contextValue.toLowerCase().search(value.toLowerCase()) === -1;
+          }
+          return contextValue.search(value) >= 0;
         }
         if (flags.includes('i')) {
-          return !value.filter((el: string) => el.toLowerCase()).includes(expected.toLowerCase());
+          return !value.filter((el: string) => el.toLowerCase()).includes(contextValue.toLowerCase());
         }
-        return !value.includes(expected);
+        return !value.includes(contextValue);
       },
       'humanlyReadableAs': 'not in',
     },
@@ -170,17 +178,17 @@ export const conditions: IFilter = { // TODO rename handlers?
   'greaterThan':
     {
       'alias': ['greaterThan', 'gt'],
-      'call': (value: any, expected: any, flags: string[]) => {
-        if (typeof value === 'number' && typeof expected === 'number') {
-          return value < expected;
+      'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === 'number' && typeof contextValue === 'number') {
+          return value < contextValue;
         }
         throw(new CheckError({
           'status': false,
           'operator': 'greaterThan',
           'given_value': value,
-          'expected': expected,
+          'contextValue': contextValue,
           'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof expected} is not handle`,
+          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
         }));
       },
       'humanlyReadableAs': 'greaterThan than',
@@ -189,17 +197,17 @@ export const conditions: IFilter = { // TODO rename handlers?
   'greaterThanEquals':
     {
       'alias': ['greaterThanEquals', 'gte'],
-      'call': (value: any, expected: any, flags: string[]) => {
-        if (typeof value === 'number' && typeof expected === 'number') {
-          return value <= expected;
+      'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === 'number' && typeof contextValue === 'number') {
+          return value <= contextValue;
         }
         throw(new CheckError({
           'status': false,
           'operator': 'greaterThanEquals',
           'given_value': value,
-          'expected': expected,
+          'contextValue': contextValue,
           'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof expected} is not handle`,
+          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
         }));
       },
       'humanlyReadableAs': 'greater or equal than',
@@ -208,17 +216,17 @@ export const conditions: IFilter = { // TODO rename handlers?
   'lessThan':
     {
       'alias': ['lessThan', 'lt'],
-      'call': (value: any, expected: any, flags: string[]) => {
-        if (typeof value === 'number' && typeof expected === 'number') {
-          return value > expected;
+      'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === 'number' && typeof contextValue === 'number') {
+          return value > contextValue;
         }
         throw(new CheckError({
           'status': false,
           'operator': 'lessThan',
           'given_value': value,
-          'expected': expected,
+          'contextValue': contextValue,
           'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof expected} is not handle`,
+          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
         }));
       },
       'humanlyReadableAs': 'less than',
@@ -227,17 +235,17 @@ export const conditions: IFilter = { // TODO rename handlers?
   'lessThanEquals':
     {
       'alias': ['lessequal', 'lte'],
-      'call': (value: any, expected: any, flags: string[]) => {
-        if (typeof value === 'number' && typeof expected === 'number') {
-          return value >= expected;
+      'call': (value: any, contextValue: any, flags: string[]) => {
+        if (typeof value === 'number' && typeof contextValue === 'number') {
+          return value >= contextValue;
         }
         throw(new CheckError({
           'status': false,
           'operator': 'lessThanEquals',
           'given_value': value,
-          'expected': expected,
+          'contextValue': contextValue,
           'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof expected} is not handle`,
+          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
         }));
       },
       'humanlyReadableAs': 'lesser or equal to',

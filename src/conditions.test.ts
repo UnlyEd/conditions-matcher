@@ -588,7 +588,7 @@ describe('src/studentSolutions', () => {
           const filtersNestedSimple = {
             'AND': [ // true
               {
-                'organisation_name__startsWith_i': 'Sk', // true
+                'organisation_name__startsWith': 'sk', // true
                 'organisation_name__wrong-arg': 'nope', //ignored
               },
             ],
