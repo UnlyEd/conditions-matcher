@@ -20,7 +20,7 @@ export interface IFilter {
  * Interface which contain a pair of a string and function to callback
  */
 interface ILogicalOperators {
-  [key: string]: any
+  [key: string]: Function
 }
 
 /**
@@ -153,7 +153,7 @@ export const formatFilters = (filters: IFilter) => {
         if (Object.keys(conditions[i]).length > 1) {
           const ruleObjectBackup = conditions[i];
           filters[logicalOperator].splice(i - 1, 1);
- 
+
           for (let [rule, expected] of Object.entries(ruleObjectBackup)) {
             let newObj: IFilter = {};
 
