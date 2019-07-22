@@ -3,7 +3,7 @@
   "version": "1.0.10-beta.1",
   "description": "Open-source library using Node v8.10",
   "scripts": {
-    "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test:nobuild\"'",
+    "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test\"'",
     "build": "tsc -w",
     "build:once": "tsc",
     "clean": "rm -rf lib/",
@@ -16,10 +16,9 @@
     "release": "yarn bump --prompt --commit --tag --push",
     "releaseAndPublish": "yarn release && npm publish",
     "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
-    "test": "yarn build:once && NODE_ENV=test jest --watch",
-    "test:nobuild": "NODE_ENV=test jest --watch",
-    "test:once": "yarn build:once && NODE_ENV=test jest",
-    "test:coverage": "yarn build:once && NODE_ENV=test jest --coverage"
+    "test": "NODE_ENV=test jest --watch",
+    "test:once": "NODE_ENV=test jest",
+    "test:coverage": "NODE_ENV=test jest --coverage"
   },
   "main": "lib/conditions.js",
   "repository": {
