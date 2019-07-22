@@ -123,7 +123,7 @@ export const handleComplexRequest = (operators: string, path: string, context: I
     if (typeof valueInContext === 'undefined' || typeof givenValue === 'undefined') {
       return {
         'status': false,
-        'complexe_operator': complexeConditionalOperator,
+        'complex_operator': complexeConditionalOperator, // TODO currently undocumented
         'operator': conditionalOperator,
         'given_value': givenValue,
         'expected': valueInContext,

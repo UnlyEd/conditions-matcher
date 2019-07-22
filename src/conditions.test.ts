@@ -1,6 +1,6 @@
 import checkContextMatchesConditions from './conditions';
 
-describe('src/studentSolutions', () => {
+describe('src/conditions', () => {
   describe('checkContextMatchesConditions should', () => {
     describe('when using AND operator alone, without complex nesting (using both expressive AND or assumed AND)', () => {
       test(`should match when correct organisation_name is in context`, async () => {
@@ -594,7 +594,7 @@ describe('src/studentSolutions', () => {
             ],
           };
           const { status, ignoredConditions } = checkContextMatchesConditions(filtersNestedSimple, context);
-          expect(status).toBe(true);
+          expect(status).toEqual(true);
           expect(ignoredConditions).toMatchObject([{ operator: 'wrong-arg' }]);
         });
 
@@ -654,7 +654,7 @@ describe('src/studentSolutions', () => {
           ],
         };
         const ret = checkContextMatchesConditions(filter, {});
-        expect(ret.status).toBe(true);
+        expect(ret.status).toEqual(true);
         expect(ret.ignoredConditions).toHaveLength(1);
         expect(ret.ignoredConditions[0].expected).toBeUndefined();
 
@@ -667,7 +667,7 @@ describe('src/studentSolutions', () => {
           'age': 18,
         };
         const ret = checkContextMatchesConditions(filter, context);
-        expect(ret.status).toBe(true);
+        expect(ret.status).toEqual(true);
         expect(ret.ignoredConditions).toHaveLength(1);
         expect(ret.ignoredConditions[0].expected).toBeUndefined();
       });
@@ -679,7 +679,7 @@ describe('src/studentSolutions', () => {
           'age': 18,
         };
         const ret = checkContextMatchesConditions(filter, context);
-        expect(ret.status).toBe(true);
+        expect(ret.status).toEqual(true);
         expect(ret.ignoredConditions).toHaveLength(1);
         expect(ret.ignoredConditions[0].expected).toBeUndefined();
       });
@@ -691,7 +691,7 @@ describe('src/studentSolutions', () => {
           'age': 18,
         };
         const ret = checkContextMatchesConditions(filter, context);
-        expect(ret.status).toBe(true);
+        expect(ret.status).toEqual(true);
         expect(ret.ignoredConditions).toHaveLength(1);
         expect(ret.ignoredConditions[0].expected).toBeUndefined();
       });
@@ -703,7 +703,7 @@ describe('src/studentSolutions', () => {
           'age': 18,
         };
         const ret = checkContextMatchesConditions(filter, context);
-        expect(ret.status).toBe(false);
+        expect(ret.status).toEqual(false);
         expect(ret.ignoredConditions).toHaveLength(1);
         expect(ret.ignoredConditions[0].expected).toBeUndefined();
       });
@@ -718,7 +718,7 @@ describe('src/studentSolutions', () => {
           'age': 18,
         };
         const ret = checkContextMatchesConditions(filter, context, { 'strictMatch': true });
-        expect(ret.status).toBe(false);
+        expect(ret.status).toEqual(false);
       });
     });
   });

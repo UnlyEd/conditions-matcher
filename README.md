@@ -1,3 +1,6 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/d8318651d334711f79dc/maintainability)](https://codeclimate.com/github/UnlyEd/conditions-matcher/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d8318651d334711f79dc/test_coverage)](https://codeclimate.com/github/UnlyEd/conditions-matcher/test_coverage)
+
 # Conditions-matcher
 
 Check which conditions

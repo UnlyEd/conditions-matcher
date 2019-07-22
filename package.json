@@ -3,7 +3,7 @@
   "version": "1.0.10-beta.1",
   "description": "Open-source library using Node v8.10",
   "scripts": {
-    "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test:simple\"'",
+    "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test:nobuild\"'",
     "build": "tsc -w",
     "build:once": "tsc",
     "clean": "rm -rf lib/",
@@ -17,7 +17,7 @@
     "releaseAndPublish": "yarn release && npm publish",
     "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
     "test": "yarn build:once && NODE_ENV=test jest --watch",
-    "test:simple": "NODE_ENV=test jest --watch",
+    "test:nobuild": "NODE_ENV=test jest --watch",
     "test:once": "yarn build:once && NODE_ENV=test jest",
     "test:coverage": "yarn build:once && NODE_ENV=test jest --coverage"
   },
@@ -37,7 +37,7 @@
     "access": "public"
   },
   "files": [
-    "lib"
+    "/lib"
   ],
   "devDependencies": {
     "@babel/core": "7.5.0",

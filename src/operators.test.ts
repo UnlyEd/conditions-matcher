@@ -11,50 +11,50 @@ import { formatFilters } from '../lib/conditions';
 describe('src/operators', () => {
   describe('AND operator', () => {
     test('Values are true', () => {
-      expect(and([true, true, true, true])).toBe(true);
-      expect(and([true])).toBe(true);
+      expect(and([true, true, true, true])).toEqual(true);
+      expect(and([true])).toEqual(true);
     });
     test('Values are mixed', () => {
-      expect(and([true, false, true])).toBe(false);
-      expect(and([true, false, false])).toBe(false);
-      expect(and([true, false])).toBe(false);
+      expect(and([true, false, true])).toEqual(false);
+      expect(and([true, false, false])).toEqual(false);
+      expect(and([true, false])).toEqual(false);
     });
     test('Values are false', () => {
-      expect(and([false, false])).toBe(false);
-      expect(and([false])).toBe(false);
+      expect(and([false, false])).toEqual(false);
+      expect(and([false])).toEqual(false);
     });
   });
 
   describe('OR operator', () => {
     test('Values are true', () => {
-      expect(or([true, true, true, true])).toBe(true);
-      expect(or([true])).toBe(true);
+      expect(or([true, true, true, true])).toEqual(true);
+      expect(or([true])).toEqual(true);
     });
     test('Values are mixed', () => {
-      expect(or([true, false, true])).toBe(true);
-      expect(or([true, false, false])).toBe(true);
-      expect(or([true, false])).toBe(true);
+      expect(or([true, false, true])).toEqual(true);
+      expect(or([true, false, false])).toEqual(true);
+      expect(or([true, false])).toEqual(true);
     });
     test('Values are false', () => {
-      expect(or([false, false])).toBe(false);
-      expect(or([false])).toBe(false);
+      expect(or([false, false])).toEqual(false);
+      expect(or([false])).toEqual(false);
 
     });
   });
 
   describe('NOT operator', () => {
     test('Values are true', () => {
-      expect(not([true, true, true, true])).toBe(false);
-      expect(not([true])).toBe(false);
+      expect(not([true, true, true, true])).toEqual(false);
+      expect(not([true])).toEqual(false);
     });
     test('Values are mixed', () => {
-      expect(not([true, false, true])).toBe(false);
-      expect(not([true, false, false])).toBe(false);
-      expect(not([false, true])).toBe(false);
+      expect(not([true, false, true])).toEqual(false);
+      expect(not([true, false, false])).toEqual(false);
+      expect(not([false, true])).toEqual(false);
     });
     test('Values are false', () => {
-      expect(not([false, false])).toBe(true);
-      expect(not([false])).toBe(true);
+      expect(not([false, false])).toEqual(true);
+      expect(not([false])).toEqual(true);
     });
   });
 

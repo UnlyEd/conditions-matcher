@@ -1,0 +1,3 @@
+# See https://docs.codeclimate.com/docs/excluding-files-and-folders
+exclude_patterns:
+  - "src/**.test.*"

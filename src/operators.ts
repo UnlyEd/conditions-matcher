@@ -1,4 +1,5 @@
 import { deepStrictEqual } from 'assert';
+
 import { CheckError } from './errors';
 import { IFilter } from "./conditions";
 
@@ -188,7 +189,7 @@ export const conditions: IFilter = { // TODO rename handlers?
           'given_value': value,
           'contextValue': contextValue,
           'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
+          'reason': `Error: wrong type: compare ${typeof value} to ${typeof contextValue} is not handle`,
         }));
       },
       'humanlyReadableAs': 'greaterThan than',
@@ -207,7 +208,7 @@ export const conditions: IFilter = { // TODO rename handlers?
           'given_value': value,
           'contextValue': contextValue,
           'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
+          'reason': `Error: wrong type: compare ${typeof value} to ${typeof contextValue} is not handle`,
         }));
       },
       'humanlyReadableAs': 'greater or equal than',
@@ -226,7 +227,7 @@ export const conditions: IFilter = { // TODO rename handlers?
           'given_value': value,
           'contextValue': contextValue,
           'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
+          'reason': `Error: wrong type: compare ${typeof value} to ${typeof contextValue} is not handle`,
         }));
       },
       'humanlyReadableAs': 'less than',
@@ -245,7 +246,7 @@ export const conditions: IFilter = { // TODO rename handlers?
           'given_value': value,
           'contextValue': contextValue,
           'flags': flags,
-          'reason': `Error: wrong type: compare ${typeof value} to  ${typeof contextValue} is not handle`,
+          'reason': `Error: wrong type: compare ${typeof value} to ${typeof contextValue} is not handle`,
         }));
       },
       'humanlyReadableAs': 'lesser or equal to',
