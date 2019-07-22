@@ -1,5 +1,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/d8318651d334711f79dc/maintainability)](https://codeclimate.com/github/UnlyEd/conditions-matcher/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d8318651d334711f79dc/test_coverage)](https://codeclimate.com/github/UnlyEd/conditions-matcher/test_coverage)
+![Build Status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiWGQ3V2dEdGpUendlc05TRm5RWXZzejJCRDFVb09maFJqSzRmKzh4aUZzSVY3Qk9nZ2hMTmV0Z3VtOUJQYW5Hd3diZnlvMXhFUnhIQjVEc0RnRm9XTnRnPSIsIml2UGFyYW1ldGVyU3BlYyI6Ii9NdXdzQ2JNQ2lLUWZQR04iLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
 # Conditions-matcher
 
