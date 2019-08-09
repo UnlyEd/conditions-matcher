@@ -1,4 +1,4 @@
-import checkContextMatchesConditions from './conditions';
+import checkContextMatchesConditions from './checkMatches';
 
 describe('src/conditions', () => {
   describe('checkContextMatchesConditions should', () => {
@@ -595,7 +595,7 @@ describe('src/conditions', () => {
           };
           const { status, ignoredConditions } = checkContextMatchesConditions(filtersNestedSimple, context);
           expect(status).toEqual(true);
-          expect(ignoredConditions).toMatchObject([{ operator: 'wrong-arg' }]);
+          expect(ignoredConditions).toMatchObject([{ conditionalOperator: 'wrong-arg' }]);
         });
 
         test(`should work with multiple AND, OR and NOT`, async () => {
@@ -709,16 +709,32 @@ describe('src/conditions', () => {
       });
     });
 
-    describe('test strict match option', () => {
-      test('AND filter and empty context with strict match should be false', async () => {
+    describe('handle strict match option', () => {
+      test('should not match when the context does not contain a value for all properties, when enabling strictMatch option', async () => {
         const filter = {
-          'AND': [{ 'name': 'EPITECH', 'age': 18 }],
+          'AND': [{ 'name': 'EPITECH', 'age': 18 }], // XXX Expects the context to contain ALL properties that are expected in the context (strict mode). If any is missing, then it's considered as a mismatch.
         };
         const context = {
           'age': 18,
         };
         const ret = checkContextMatchesConditions(filter, context, { 'strictMatch': true });
         expect(ret.status).toEqual(false);
+        expect(ret.ignoredConditions).toBeNull();
+        expect(ret.reason).toBeDefined();
+      });
+
+      test('should match when the context does not contain a value for all properties, when disabling strictMatch option', async () => {
+        const filter = {
+          'AND': [{ 'name': 'EPITECH', 'age': 18 }], // XXX Doesn't expect the context to contain all properties, will match based on what's available within the context (no strict mode).
+        };
+        const context = {
+          'age': 18,
+        };
+        const ret = checkContextMatchesConditions(filter, context, { 'strictMatch': false });
+        expect(ret.status).toEqual(true);
+        expect(ret.ignoredConditions).toHaveLength(1);
+        // console.log(ret)
+        // expect(ret.reason).toBeDefined(); // FIXME should be defined
       });
     });
   });

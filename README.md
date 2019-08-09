@@ -47,7 +47,7 @@ import contextMatcher from "@unly/conditions-matcher";
 ```
 
 See the [examples](./examples) for more details.
-Then please check the conditions documentation [here](./README-CONDITIONS.md)
+Then please check the conditions documentation [here](./README-CONDITIONAL-OPERATORS.md)
 
 ---
 

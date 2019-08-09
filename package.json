@@ -20,7 +20,7 @@
     "test:once": "NODE_ENV=test jest",
     "test:coverage": "NODE_ENV=test jest --coverage"
   },
-  "main": "lib/conditions.js",
+  "main": "lib/checkMatches.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/UnlyEd/conditions-matcher.git"

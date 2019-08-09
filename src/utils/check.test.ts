@@ -34,7 +34,7 @@ describe('utils/check', () => {
   describe('when the given value does not exist in the context, then it', () => {
     test('should not find a match', async () => {
       const result = check(context, 'partner_name__some_eq', 'UNLy');
-      expect(result.status).toEqual(false)
+      expect(result.status).toEqual(false);
     });
   });
 
@@ -56,7 +56,7 @@ describe('utils/check', () => {
         check(context, 'school_name__notAnOperator', 'EPITECH');
       } catch (e) {
         expect(e.data.status).toEqual(false);
-        expect(e.data.reason).toEqual(`Error: operator: "notAnOperator" does not exist or doesn't have "call" attribute`);
+        expect(e.data.reason).toEqual(`Error: operator: "notAnOperator" does not exist or doesn't have "callback" attribute`);
       }
     });
   });
@@ -188,7 +188,7 @@ describe('utils/check', () => {
     const context = {
       'school': {
         'name': 'EPITECH',
-        'name__flags': ["i"],
+        'name__flags': ['i'],
         'averageGPA': 2.5,
         'averageGPAString': '2.5',
         'address': {
@@ -217,19 +217,19 @@ describe('utils/check', () => {
       ],
     };
     test('equal i flag', async () => {
-      expect(check(context, "school_name__eq", "epitech").status).toEqual(true)
+      expect(check(context, 'school_name__eq', 'epitech').status).toEqual(true);
     });
     test('startsWith i flag', async () => {
-      expect(check(context, "school_name__sw", "epi").status).toEqual(true)
+      expect(check(context, 'school_name__sw', 'epi').status).toEqual(true);
     });
     test('endsWith i flag', async () => {
-      expect(check(context, "school_name__ew", "tech").status).toEqual(true)
+      expect(check(context, 'school_name__ew', 'tech').status).toEqual(true);
     });
     test('contains i flag', async () => {
-      expect(check(context, "school_name__in", ["epitech"]).status).toEqual(true)
+      expect(check(context, 'school_name__in', ['epitech']).status).toEqual(true);
     });
     test('nocontains i flag', async () => {
-      expect(check(context, "school_name__nin", ["epitech"]).status).toEqual(false)
+      expect(check(context, 'school_name__nin', ['epitech']).status).toEqual(false);
     });
-  })
+  });
 });
