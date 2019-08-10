@@ -1,267 +1,292 @@
-
-# Conditional Operator   
-This document describes the list of every conditional operator available in src/conditionalOperators.ts.
+> This document describes the list of all available conditional operators in [src/conditionalOperators/index.ts](./src/conditionalOperators/index.ts).
  
-## Flags  
-In this algorithm you can add some flag in the context (see example for applications) those flags are used to add a specific behavior to this variable.
+# Flags
+Flags are a way to change the behavior of operators, per property in the context.
 
-### list
-* 'i'  is no hard case
-  
-### example  
-```js
-const context = {  
- 'name':'Unly',  
- 'name__flags':['i']}  
-```  
-  
-## Equal
- 
-### definition  
-	 This operator compares two elements and return true if there are equal for the objects the equivalent is base on the content. it's also the default conditional operator.
+- `i`: **Case insensitive**. By default, all conditional operators are case sensitive. Using this flag will perform a case insensitive comparison.
 
-### alias  
-* equals  
-* eq  
-  
-### example  
+## Example
 ```js
-const context = {  
- 'school':{  
- 'name':'Unly',  
- 'city':'lyon',  
- 'city__flags':['i'],  
- 'Postal_code':69000,
- }  
+const context = {
+    'name':'Unly',
+    'name__flags':['i']
+}
+```
+
+---
+# Conditional Operators
+
+> Examples given here use the [`check`](./src/utils/check.ts) function, which is what's called internally by `contextMatcher` to check if the context matches the filter.
+> `const check = (context: object, rule: string, value: any, options: IMap = defaultOptions)`
+
+## Equals
+
+### Definition
+> This operator compares two elements and return true if they are strictly equal (for primitives/scalar types).
+> For complex types (objects, arrays) the comparison is made based on the context (strictly equal as well). 
+> **Also, this operator is the default operator if none are explicitly defined.**
+
+### Aliases
+* equals
+* eq
+
+### Example
+```js
+const context = {
+    'school':{
+        'name':'Unly',
+        'city':'lyon',
+        'city__flags':['i'], // The "city" attribute will be matched using "case insensitive" flag
+        'postal_code':69000,
+    }
 };
-check(context, 'school_name__eq', 'Unly'); // true  
-check(context, 'school_name__equals', 'unly'); // false  
-check(context, 'school_city__equals', 'LYON'); // true  
-check(context, 'school', {'name':'Unly','Postal_code':69000,}); // true  
-```  
-  
-## Not Equal  
-  
-### definition  
-	 Check if two objects are different.
-   
-### alias  
-* notEquals  
-* ne  
-  
-### example  
-```js
-const context = {  
- 'school':{  
- 'name':'Unly',  
- 'city':'lyon',  
- 'city__flags':['i'],  
- 'Postal_code':69000,
- }  
-};
-check(context, 'school_name__ne', 'Unly'); // false  
-check(context, 'school_name__notEquals', 'unly'); // true  
-check(context, 'school_city__notEquals', 'LYON'); // false  
-check(context, 'school__ne', {'name':'Unly','Postal_code':69000,}); // false  
-```  
-  
-## StartsWith  
+check(context, 'school_name__eq', 'Unly'); // true
+check(context, 'school_name__equals', 'unly'); // false
+check(context, 'school_city__equals', 'LYON'); // true
+check(context, 'school_city__equals', 'lyon'); // true
+check(context, 'school_city__equals', 'lYOn'); // true
+check(context, 'school', {'name':'Unly','postal_code':69000,}); // false 
+check(context, 'school', {'name':'Unly', 'city':'lyon', 'postal_code':69000,}); // true 
+```
 
-### definition  
-	 Check if a string start with another.
-   
-### alias  
-* startsWith  
-* sw  
-  
-### example  
-```js
-const context = {  
- 'school':{  
- 'name':'Unly',  
- 'city':'lyon',  
- 'city__flags':['i'],  
- 'Postal_code':69000,  
- }  
-};
-check(context, 'school_name__sw', 'Un'); // true  
-check(context, 'school_name__sw', 'un'); // false  
-check(context, 'school_city__sw', 'LY'); // true  
-```  
-  
-## EndWith  
-  
-### definition   
-	 Check if a string finish by another.
+## Not Equals
 
-### alias
- * endsWith  
-* ew  
-  
-### example  
-  
-```js
-const context = {  
- 'school':{  
- 'name':'Unly',  
- 'city':'lyon',  
- 'city__flags':['i'],  
- 'Postal_code':69000,  
- }  
-};
-  
-check(context, 'school_name__sw', 'ly'); // true  
-check(context, 'school_name__sw', 'LY'); // false  
-check(context, 'school_city__sw', 'ON'); // true  
-```  
-  
-## Contains  
-  
-### definition   
-	Check if a string contains a given string, if an array contained a specific element or if an object contained another object.
+### Definition
+> Check if two objects are strictly different.
 
- ### alias  
-* contains  
-* includes  
+### Aliases
+* notEquals
+* ne
+
+### Example
+```js
+const context = {
+    'school':{
+        'name':'Unly',
+        'city':'lyon',
+        'city__flags':['i'],
+        'postal_code':69000,
+    }
+};
+check(context, 'school_name__ne', 'Unly'); // false
+check(context, 'school_name__notEquals', 'unly'); // true
+check(context, 'school_city__notEquals', 'LYON'); // false
+check(context, 'school_city__notEquals', 'lyon'); // false
+check(context, 'school_city__notEquals', 'lYOn'); // false
+check(context, 'school__ne', {'name':'Unly','postal_code':69000,}); // true
+check(context, 'school', {'name':'Unly', 'city':'lyon', 'postal_code':69000,}); // false 
+```
+
+## Starts With
+
+### Definition
+> Check if a string start with another.
+
+### Aliases
+* startsWith
+* sw
+
+### Example
+```js
+const context = {
+    'school':{
+        'name':'Unly',
+        'city':'lyon',
+        'city__flags':['i'],
+        'postal_code':69000,
+    }
+};
+check(context, 'school_name__sw', 'Un'); // true
+check(context, 'school_name__sw', 'un'); // false
+check(context, 'school_city__sw', 'LY'); // true
+check(context, 'school_city__sw', 'ly'); // true
+```
+
+## Ends With
+
+### Definition
+> Check if a string finish by another.
+
+### Aliases
+* endsWith
+* ew
+
+### Example
+
+```js
+const context = {
+    'school':{
+        'name':'Unly',
+        'city':'lyon',
+        'city__flags':['i'],
+        'postal_code':69000,
+    }
+};
+
+check(context, 'school_name__sw', 'ly'); // true
+check(context, 'school_name__sw', 'LY'); // false
+check(context, 'school_city__sw', 'ON'); // true
+check(context, 'school_city__sw', 'on'); // true
+```
+
+## Contains
+
+### Definition
+> String: Checks if the string contains a given string.
+> Array: Checks if the array contains a specific element.
+> Object: Checks if the object contains a specific element.
+
+ ### Aliases
+* contains
+* includes
 * in
 
-### example
+### Example
 
 ```js
-const context = {  
- "name":"Paul",  
- "location":{  
-  "city":"lyon",  
-  "post_code":69000  
- },  
- "campus":[42, "Unly"],
- "campus__flags":['i']  
+const context = {
+    "name":"Paul",
+    "location":{
+        "city":"lyon",
+        "post_code":69000
+    },
+    "campus":[42, "Unly"],
+    "campus__flags":['i']
 };
-check(context, 'school_name__in', 'aul'); // true  
-check(context, 'school_location__in', {'city':"lyon"}); // true  
-check(context, 'school_campus__in', 42); // true  
-check(context, 'school_campus__in', 'Unly'); // true  
-check(context, 'school_campus__in', 'unly'); // true  
+check(context, 'school_name__in', 'aul'); // true
+check(context, 'school_location__in', {'city':"lyon"}); // true
+check(context, 'school_campus__in', 42); // true
+check(context, 'school_campus__in', 'Unly'); // true
+check(context, 'school_campus__in', 'unly'); // true
 ```
 
-## Contains  
-  
-### definition   
-	The opposite of « contain » check if a string does not contain another given string, if an array don't contain a specific element or if an object doesn't contain another object. 
+## Not Contains
 
-### alias  
-* notContains  
-* notIncludes  
+### Definition
+> The opposite of "contains".
+> String: Checks if the string does not contain a given string.
+> Array: Checks if the array does not contain a specific element.
+> Object: Checks if the object does not contain a specific element.
+
+### Aliases
+* notContains
+* notIncludes
 * nin
 
-### example
+### Example
 
 ```js
-const context = {  
- "name":"Paul",  
- "location":{  
-  "city":"lyon",  
-  "post_code":69000  
- },  
- "campus":[42, "Unly"],
- "campus__flags":['i']  
+const context = {
+    "name":"Paul",
+    "location":{
+        "city":"lyon",
+        "post_code":69000
+    },
+    "campus":[42, "Unly"],
+    "campus__flags":['i']
 };
-check(context, 'school_name__in', 'aul'); // flase  
-check(context, 'school_location__in', {'city':"lyon"}); // false  
-check(context, 'school_campus__in', 42); // false
-check(context, 'school_campus__in', 'Unly'); // false
-check(context, 'school_campus__in', 'unly'); // false 
+check(context, 'school_name__nin', 'aul'); // false
+check(context, 'school_location__nin', {'city':"lyon"}); // false
+check(context, 'school_campus__nin', 42); // false
+check(context, 'school_campus__nin', 'Unly'); // false
+check(context, 'school_campus__nin', 'unly'); // false 
 ```
 
-## GreaterThan
+## Greater Than
 
-### definition   
-	Check if a value is greater than another.
+### Definition
+> Check if a value is greater than another.
 
-### alias  
-* greaterThan  
+### Aliases
+* greaterThan
 * gt
 
-### example
+### Example
 
 ```js
-const context = {  
- "name":"Paul",
- 'GPA':3,
+const context = {
+    "name":"Paul",
+    'GPA':3,
 };
 check(context, 'GPA__gt', 2); // true
-check(context, 'GPA__gt', '2'); // true
+check(context, 'GPA__gt', '2'); // true TODO check not sure behaviour
 ```
 
-## GreaterThanEquals
+## Greater Than or Equals
 
 ## definition 
-	Check if a value is greater or equal than another.
+> Check if a value is greater or equal than another.
 
 
-### alias  
-* greaterThanEquals  
+### Aliases
+* greaterThanEquals
 * gte
 
-### example
+### Example
 
 ```js
-const context = {  
- "name":"Paul",
- 'GPA':3,
+const context = {
+    "name":"Paul",
+    'GPA':3,
 };
 check(context, 'GPA__gte', 3); // true
-check(context, 'GPA__gte', '2'); // true
+check(context, 'GPA__gte', '3'); // true TODO check not sure behaviour
 ```
 
-## LessThan
+## Less Than
 
-### definition   
-	Check if a value is less than another.
+### Definition
+> Check if a value is less than another.
 
 
-### alias  
-* lessThan  
+### Aliases
+* lessThan
 * lt
 
-### example
+### Example
 
 ```js
-const context = {  
- "name":"Paul",
- 'GPA':3,
+const context = {
+    "name":"Paul",
+    'GPA':3,
 };
 check(context, 'GPA__lt', 4); // true
-check(context, 'GPA__lt', '4'); // true
+check(context, 'GPA__lt', '4'); // true TODO check not sure behaviour
 ```
-## LessThanEquals
+## Less Than or Equals
 
-### definition 
-    Check if a value is less or equal than another.
+### Definition 
+> Check if a value is less or equal than another.
 
-### alias  
-* lessThanEquals  
+### Aliases
+* lessThanEquals
 * lte
-### example
+### Example
 
 ```js
-const context = {  
-  "name":"Paul",
- 'GPA':3,
-};  
+const context = {
+    "name":"Paul",
+    'GPA':3,
+};
 check(context, 'GPA__lte', 3); // true
-check(context, 'GPA__lte', '4'); // true
+check(context, 'GPA__lte', '4'); // true TODO check not sure behaviour
 ```
+
+---
+# Conditional operators for arrays (batch)
+
+> It is possible to mix both a conditional operator (as seen previously), with a "batch" operator to check a condition for a set of data.
 
 ## Every
 
-### definition
-    This is a complex operator who's checking every occupancy match the given condition.
-  
-### alias
+### Definition
+> Batch operator that checks if the condition is matched by all items in the data set.
+> If any item fails to validate the condition, then it's a mismatch.
+
+### Aliases
 * every
 
-### example
+### Example
 
 ```js
 const context = {
@@ -273,18 +298,20 @@ const context = {
 }
 check(context, 'students_promotion__every_eq', 2021); // true
 check(context, 'students_promotion__every_gte', 1); // true
+check(context, 'students_promotion__every_lte', 2); // false
 ```
 
 
 ## Some
 
-#### definition
-    This is a complex operator who's  checking some occupancy match the given condition.
-  
-### alias
+#### Definition
+> Batch operator that checks if the condition is matched by any of the items in the data set.
+> If any item succeed to validate the condition, then it's a match.
+
+### Aliases
 * some
 
-### example
+### Example
 
 ```js
 const context = {
@@ -295,18 +322,21 @@ const context = {
   ]
 }
 check(context, 'students_name__some_eq', 'robert'); // true
+check(context, 'students_name__some_eq', 'roger'); // false
 check(context, 'students_promotion__some_eq', 2); // true
+check(context, 'students_promotion__some_lte', 1); // true
 ```
 
 ## None
 
-#### definition
-    This is a complex operator who's  checking none occupancy match the given condition.
-  
-### alias
+#### Definition
+> Batch operator that checks if the condition is matched by none of the items in the data set.
+> If any item succeed to validate the condition, then it's a mismatch.
+
+### Aliases
 * none
 
-### example
+### Example
 
 ```js
 const context = {
@@ -316,6 +346,8 @@ const context = {
     {'name':'Robert', 'name__flags': ['i'], 'GPA':2, "promotion":2021}
   ]
 }
-check(context, 'students_GPA__none_qte', '4'); // true
-check(context, 'students_name__some_eq', 'Louis'); // true
+check(context, 'students_GPA__none_gte', 4); // true
+check(context, 'students_GPA__none_gte', 3); // false
+check(context, 'students_name__none_eq', 'Louis'); // true
+check(context, 'students_name__none_sw', 'Rog'); // false
 ```

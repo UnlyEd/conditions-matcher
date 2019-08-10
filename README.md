@@ -4,13 +4,29 @@
 
 # Conditions-matcher
 
-Check which conditions
+> Compares a given context with a filter (a set of conditions) and resolves whether the context checks the filter.
+> Strongly inspired by [GraphQL filters](https://www.prisma.io/docs/reference/prisma-api/queries-ahwee4zaey#filtering-by-field).
+
+**Use cases are**:
+- Compare a given context with a set or conditions, to see if it matches those conditions
+- We use it at [Unly](https://unly.org/) to resolve which **financing solutions** apply to a **student**, depending on that **student's situation**
+
+The biggest strengths of this plugin are:
+- **Flexibility**: You compose your own filter, by defining conditions within it that depends on **your** business logic. 
+  - You have access to a wide range of conditional operators (`contains`, `endsWith`, `greaterThan`, etc.).
+  - You have access to the same logical operators as those available in GraphQL (AND, OR, NOT).
+  - You can nest those operators within themselves, without limit.
+- **Robustness**: There is an important test suite (unit tests) written to make sure to detect regressions and only ship well-tested and quality software. _We also follow [Semantic Versioning](#semver)._
+
+> This package was developed after opening a [StackOverflow question](https://stackoverflow.com/questions/56309234/algorithm-to-filter-data-structure-and-or-not-similar-to-graphql-implementation), we were disappointed not to find an existing implementation and therefore built our own.
 
 <!-- toc -->
 
 - [Getting started](#getting-started)
   * [Installation](#installation)
   * [Usage](#usage)
+    + [Function prototype](#function-prototype)
+    + [Import in you project](#import-in-you-project)
 - [Contributing](#contributing)
   * [Working locally](#working-locally)
   * [Test](#test)
@@ -36,6 +52,8 @@ yarn add @unly/conditions-matcher
 ```
 
 ### Usage
+
+#### Import in you project
 ES5
 ```js
 const contextMatcher = require("@unly/conditions-matcher");
@@ -46,8 +64,63 @@ ES6
 import contextMatcher from "@unly/conditions-matcher";
 ```
 
-See the [examples](./examples) for more details.
-Then please check the conditions documentation [here](./README-CONDITIONAL-OPERATORS.md)
+See the [examples](./examples) for more details, clone the project to play around with those.
+Then please check the conditional operators documentation [here](./README-CONDITIONAL-OPERATORS.md)
+
+#### Function prototype
+```ts
+const result: boolean = contextMatcher(filter, context, options);
+```
+
+**filter**: Contains all the conditions that constitute the said filter. For a complete list of conditions and operators, [see the documentation](./README-CONDITIONAL-OPERATORS.md). Example :
+```js
+const filter = {
+  AND: [
+    { "school_gpa__lessThan": 3 },
+    { "school_name__contains": "business" },
+    { "foo__eq": "bar" },
+  ],
+};
+```
+
+**context**: Is an object containing the data (context) to match against the filter, to know whether it passes the conditions or not. Example :
+```js
+const context = {
+  'school': {
+      name: 'Awesome business school',
+      gpa: 2.5
+  },
+};
+```
+
+**options**: Optional configuration object. 
+
+**This example will return the following in `result`:**
+```
+{
+  status: true, // Means the check passed, the context therefore passes the filter's conditions
+  ignoredConditions: [ // Contains conditions that were ignored due to a lack of data in `context`
+    {
+      status: null, // "null" because no check could be performed (lack of data)
+      rule: 'foo__eq',
+      conditionalOperator: 'eq',
+      path: 'foo',
+      valueInContext: undefined,
+      reason: 'Error: path: foo is not defined in context' // Human friendly error message, easier to reason about
+    }
+  ],
+}
+> ```
+
+#### Documentation
+
+##### Options
+See [`defaultOptions`](./src/utils/constants.ts).
+
+| Option name  | Default value | Description |
+|--------------|---------------|--------------|
+| `strictMatch` | false | This represents the behavior in case of non-existent context corresponds to the filter. Set to **true** if you want to return **false** in case of a value in the filter doesn't exist. |
+
 
 ---
 
@@ -84,7 +157,7 @@ We use Semantic Versioning for this project: https://semver.org/. (`vMAJOR.MINOR
 
 - Major version: Must be changed when Breaking Changes are made (public API isn't backward compatible).
   - A function has been renamed/removed from the public API
-  - Something has changed that will cause the app to behave much differently with the same configuration
+  - Something has changed that will cause the app to behave differently with the same configuration
 - Minor version: Must be changed when a new feature is added or updated (without breaking change nor behavioral change)
 - Patch version: Must be changed when any change is made that isn't either Major nor Minor. (Misc, doc, etc.)
 

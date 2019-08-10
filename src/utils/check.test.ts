@@ -85,23 +85,29 @@ describe('utils/check', () => {
     });
   });
 
-  describe('equal test', () => {
-    test(`equal test with string === string`, async () => {
+  describe('equals test', () => {
+    test(`equals test with string === string`, async () => {
       expect(check(context, 'school_name__eq', 'EPITECH').status).toEqual(true);
     });
-    test(`equal test with array === array`, async () => {
+    test(`equals test with array === array`, async () => {
       const tmp = check(context, 'list__eq', [42, 24]);
       expect(tmp.status).toEqual(true);
     });
-    test(`equal test with number === string`, async () => {
+    test(`equals test with number === string`, async () => {
       expect(check(context, 'school_averageGPA__eq', '2.5').status).toEqual(false);
     });
-    test(`equal test with object === object`, async () => {
+    test(`equals test with object === object`, async () => {
       expect(check(context, 'school_address__eq', {
         'street': 'Baker Street',
         'city': 'London',
         'number': '221B',
       }).status).toEqual(true);
+    });
+    test.only(`equals test with object !== object`, async () => {
+      expect(check(context, 'school_address__eq', {
+        'street': 'Baker Street',
+        'city': 'London',
+      }).status).toEqual(false);
     });
   });
 
