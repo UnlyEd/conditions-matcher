@@ -3,7 +3,6 @@ version: 0.2
 env:
   # Please refer to https://github.com/UnlyEd/slack-codebuild
   variables:
-    CI_BRANCH: master
     SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
     CODEBUILD_NOTIFY_ONLY_IF_FAIL: 1
     CC_TEST_REPORTER_ID: c0c5ae7f8483937dc6785b28727a35b05850213a5d561bd919ba7e79dcd9fdd2
@@ -16,6 +15,9 @@ phases:
     commands:
       - yarn --production=false # Install devDependencies (to run tests) - See https://yarnpkg.com/lang/en/docs/cli/install/#toc-yarn-install-production-true-false
       - yarn global add @unly/slack-codebuild
+      - echo Installing codebuild-extras... # Install and execute aws-codebuild-extra, which adds env variables necessary on CodeBuild (including some for CodeClimate)
+      - curl -fsSL https://raw.githubusercontent.com/UnlyEd/aws-codebuild-extras/master/install >> extras.sh
+      - . ./extras.sh
 
   # See https://github.com/codeclimate/test-reporter/issues/379 for additional info regarding how to setup CodeBuild with CodeClimate
   pre_build:
