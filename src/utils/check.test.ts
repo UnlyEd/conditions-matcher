@@ -103,7 +103,7 @@ describe('utils/check', () => {
         'number': '221B',
       }).status).toEqual(true);
     });
-    test.only(`equals test with object !== object`, async () => {
+    test(`equals test with object !== object`, async () => {
       expect(check(context, 'school_address__eq', {
         'street': 'Baker Street',
         'city': 'London',
