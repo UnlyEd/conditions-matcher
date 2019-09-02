@@ -3,7 +3,6 @@ import IReturnValuesType from './interfaces/IReturnValuesType';
 import { logicalOperators, LOP_AND } from './operators/logicalOperators';
 import { check } from './utils/check';
 import { defaultOptions } from './utils/constants';
-import { CheckError } from './utils/errors';
 
 /**
  * Resolve whether the given conditions are matched by the given context

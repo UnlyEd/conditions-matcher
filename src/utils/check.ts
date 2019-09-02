@@ -184,7 +184,7 @@ export const handleComplexRequest = (operators: string, path: string, context: I
     'given_value': givenValue,
     'valueInContext': matches,
     'flags': flags,
-    'reason': `${isSuccess ? 'Success' : 'Fail'} because "${matches}" is ${isSuccess ? '' : 'not'} ${findInConditions(complexConditionalOperator, 'humanlyReadableAs', flags)} "${givenValue}"`,
+    'reason': `${isSuccess ? 'Success' : 'Fail'} because ${findInConditions(complexConditionalOperator, 'humanlyReadableAs', flags)} of "${JSON.stringify(matches)}" is ${isSuccess ? '' : 'not'}  "${givenValue}"`,
   };
 };
 

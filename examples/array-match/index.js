@@ -1,4 +1,4 @@
-import contextMatcher from '@unly/conditions-matcher';
+import contextMatcher from '../../lib/checkMatches';
 
 const checkAllSchoolsRateLowerThanThresholdThatFails = {
   'schools_rate__every_lte': 4.2, // false
@@ -14,7 +14,6 @@ const checkSomeSchoolsNameStartsWithThatFails = {
 
 const checkAllSchoolsNameStartsWithInsensitiveThatSucceeds = {
   'schools_name__every_startsWith': 'I', // true
-  'schools_name__every_startsWith__flags': ['i'],
 };
 
 const checkNoSchoolsRateLowerThanThresholdThatSucceeds = {
@@ -25,14 +24,17 @@ const context = {
   schools: [
     {
       name: 'ISS',
+      name__flag: ["i"],
       rate: 4.2,
     },
     {
       name: 'ISE',
+      name__flag: ["i"],
       rate: 3.7,
     },
     {
       name: 'ICSE',
+      name__flag: ["i"],
       rate: 4.3,
     },
   ],

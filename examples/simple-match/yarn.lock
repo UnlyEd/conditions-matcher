@@ -2,13 +2,6 @@
 # yarn lockfile v1
 
 
-"@unly/conditions-matcher@2.0.0-beta.0":
-  version "2.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@unly/conditions-matcher/-/conditions-matcher-2.0.0-beta.0.tgz#6ec590e891696eed9a36a28bb537b70b7ae54cbb"
-  integrity sha512-meqoKvuO7vaEvZhvAboQWyiQIM4TSq2aLFOPZipe4uSe9F/ABFldQy7VV71Y7yrqsToFrIU2wJUC2tU830ya7A==
-  dependencies:
-    lodash "4.17.14"
-
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -870,11 +863,6 @@ latest-version@^3.0.0:
   integrity sha1-ogU4P+oyKzO1rjsYq+4NwvNW7hU=
   dependencies:
     package-json "^4.0.0"
-
-lodash@4.17.14:
-  version "4.17.14"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
-  integrity sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==
 
 lowercase-keys@^1.0.0:
   version "1.0.1"

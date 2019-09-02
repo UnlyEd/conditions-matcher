@@ -1,7 +1,7 @@
 {
   "name": "@unly/conditions-matcher",
   "version": "2.0.0",
-  "description": "Open-source library using Node v8.10",
+  "description": "Compares a given context with a filter (a set of conditions) and resolves whether the context checks the filter. Strongly inspired by [GraphQL filters](https://www.prisma.io/docs/reference/prisma-api/queries-ahwee4zaey#filtering-by-field).",
   "scripts": {
     "start": "cross-env-shell 'concurrently -p '{name}' -n 'lint,build,test' -c 'gray.bgWhite,yellow.bgBlue,green.bgWhite' \"yarn lint\" \"yarn build\" \"yarn test\"'",
     "build": "tsc -w",

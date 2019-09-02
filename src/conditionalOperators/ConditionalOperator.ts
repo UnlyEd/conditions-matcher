@@ -4,6 +4,11 @@ class ConditionalOperator implements IConditionalOperator {
   alias: string[] = [];
   humanlyReadableAs: string = '';
 
+  constructor() {
+    // Force bind callback to the current class, to avoid "this" being undefined within the "callback" method
+    this.callback = this.callback.bind(this);
+  }
+
   /**
    * This function is a callback used by all conditional operators.
    *
