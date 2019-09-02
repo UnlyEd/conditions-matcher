@@ -1,5 +1,5 @@
 import ICheckError from '../interfaces/ICheckError';
-import IValueNotFound from '../interfaces/IValueNotFound'
+import IValueNotFound from '../interfaces/IValueNotFound';
 
 export class CheckError extends Error {
   public data: ICheckError;

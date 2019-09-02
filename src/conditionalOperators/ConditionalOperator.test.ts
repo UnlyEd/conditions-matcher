@@ -1,8 +1,8 @@
 import ConditionalOperator from './ConditionalOperator';
 
-describe('ConditionalOperator test src/conditionalOperators/*', () => {
-  test('Conditional operator default function', () => {
+describe('ConditionalOperator', () => {
+  test('"callback" should throw an error when called (not implemented)', () => {
     const operator = new ConditionalOperator();
-    expect(operator.callback(null)).toBe(false);
+    expect(() => operator.callback(null)).toThrow();
   });
 });

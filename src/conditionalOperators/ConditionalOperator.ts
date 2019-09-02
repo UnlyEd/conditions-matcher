@@ -12,7 +12,7 @@ class ConditionalOperator implements IConditionalOperator {
    * @param flags
    */
   callback(value: any, contextValue?: any, flags?: string[]): boolean {
-    return false;
+    throw Error(`"callback" must be implemented in child class. ConditionalOperator cannot be used directly.`);
   };
 }
 

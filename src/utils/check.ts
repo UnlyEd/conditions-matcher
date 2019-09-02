@@ -1,9 +1,9 @@
 import { get, isUndefined, map } from 'lodash';
 
+import conditionalOperators from '../conditionalOperators/index';
 import IConditionalOperator from '../interfaces/IConditionalOperator';
 import IFilter from '../interfaces/IFilter';
 import IMap from '../interfaces/IMap';
-import conditionalOperators from '../conditionalOperators/index';
 import {
   DEFAULT_CONDITION,
   defaultOptions,

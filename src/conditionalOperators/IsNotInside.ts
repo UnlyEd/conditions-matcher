@@ -1,6 +1,6 @@
 import { CheckError } from '../utils/errors';
 import ConditionalOperator from './ConditionalOperator';
-import { isStringInArray, isObjectInObject, isStringInObject, isStringInString } from './utils';
+import { isObjectInObject, isStringInArray, isStringInObject, isStringInString } from './utils';
 
 class IsNotInside extends ConditionalOperator {
   alias: string[] = ['isNotInside', 'isnIn'];

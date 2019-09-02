@@ -5,5 +5,5 @@ export default interface ICheckError {
   'contextValue'?: any,
   'flags': any,
   'reason': string,
-  'target'?:any
+  'target'?: any
 }

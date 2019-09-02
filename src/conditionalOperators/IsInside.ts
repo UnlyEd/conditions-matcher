@@ -1,6 +1,6 @@
 import { CheckError } from '../utils/errors';
 import ConditionalOperator from './ConditionalOperator';
-import { isStringInArray, isObjectInObject, isStringInObject, isStringInString } from './utils';
+import { isObjectInObject, isStringInArray, isStringInObject, isStringInString } from './utils';
 
 class IsInside extends ConditionalOperator {
   alias: string[] = ['isInside', 'isIn'];
@@ -21,7 +21,7 @@ class IsInside extends ConditionalOperator {
     if (ret === null) {
       throw new CheckError({
         'status': false,
-        'conditionalOperator': "includes",
+        'conditionalOperator': 'includes',
         'value': value,
         'contextValue': contextValue,
         'flags': flags,

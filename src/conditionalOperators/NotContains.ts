@@ -1,13 +1,13 @@
 import { CheckError } from '../utils/errors';
 import ConditionalOperator from './ConditionalOperator';
-import { isStringInArray, isObjectInObject, isStringInObject, isStringInString } from './utils';
+import { isObjectInObject, isStringInArray, isStringInObject, isStringInString } from './utils';
 
 class NotContains extends ConditionalOperator {
   alias: string[] = ['notContains', 'notIncludes', 'nin'];
   humanlyReadableAs: string = 'does not contain';
 
   callback(value: any, contextValue: any, flags: string[]): boolean {
-    let ret = isStringInString(contextValue,value , flags);
+    let ret = isStringInString(contextValue, value, flags);
 
     if (ret === null) {
       ret = isStringInArray(contextValue, value, flags);

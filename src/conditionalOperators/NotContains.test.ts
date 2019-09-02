@@ -6,7 +6,7 @@ describe('NotContains operator', () => {
     expect(operator.callback('Hello World', 'Foo', [])).toBe(true);
   });
 
-  test('Output should throw', ()=>{
+  test('Output should throw', () => {
     expect(() => {
       operator.callback(undefined, undefined, []);
     }).toThrowError(/CheckError/);

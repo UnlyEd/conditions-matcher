@@ -8,31 +8,38 @@ import { CheckError } from './utils/errors';
 /**
  * Resolve whether the given conditions are matched by the given context
  *
- * @example filter
- *      {
-          'AND': [
-            {
-              'organisation_name': 'skema',
-              'institution_name': 'skema',
-              'campus_name': 'paris',
-            },
-          ],
-          'organisation_name': 'skema',
-        }
- *
- * @example context
- *      {
-          organisation: {
-            name: 'skema',
-          },
-          institution: {
-            name: 'skema',
-          },
-          campus: {
-            name: 'not-paris',
-          },
-        }
- *
+ * @example
+ filter:
+ {
+    'AND': [
+      {
+        'organisation_name': 'skema',
+        'institution_name': 'skema',
+        'campus_name': 'paris',
+      },
+    ],
+  }
+
+ context:
+ {
+    organisation: {
+      name: 'skema',
+    },
+    institution: {
+      name: 'skema',
+    },
+    campus: {
+      name: 'not-paris',
+    },
+  }
+
+ returns:
+ {
+    status: false,
+    ignoredConditions: null,
+    reason: ""
+ }
+
  * @param filter
  * @param context
  * @param options
@@ -76,7 +83,10 @@ const checkContextMatchesConditions = (filter: IFilter, context: object, options
         }
       } catch (e) {
         if (e.name === 'CheckError' || e.name === 'ValueNotFound') {
-          return { 'status': false, 'ignoredConditions': e.data };
+          return {
+            'status': false,
+            'ignoredConditions': e.data
+          };
         } else {
           throw e;
         }
@@ -85,7 +95,10 @@ const checkContextMatchesConditions = (filter: IFilter, context: object, options
   }
 
   if (Object.entries(returnValues).length === 0 && returnValues.constructor === Object) {
-    return { 'status': true, 'ignoredConditions': ignoredConditionsCollection.length > 0 ? ignoredConditionsCollection : null };
+    return {
+      'status': true,
+      'ignoredConditions': ignoredConditionsCollection.length > 0 ? ignoredConditionsCollection : null
+    };
   }
 
   let operatorsValues = [];
@@ -102,20 +115,8 @@ const checkContextMatchesConditions = (filter: IFilter, context: object, options
 
 /**
  * Reformat filter passed as argument to be compliant as the example
- * @example
+ *
  * @param filter
- *    {
-        'AND': [
-          {
-            'organisation_name': 'skema'
-          },{
-            'institution_name': 'skema',
-          },{
-            'campus_name': 'paris',
-          },
-        ],
-        'organisation_name': 'skema',
-       }
  * @returns {array}
  */
 export const formatFilter = (filter: IFilter) => {
@@ -125,6 +126,7 @@ export const formatFilter = (filter: IFilter) => {
         if (Object.keys(conditions[i]).length > 1) {
           const ruleObjectBackup = conditions[i];
           filter[logicalOperator].splice(i - 1, 1);
+
           for (let [rule, expected] of Object.entries(ruleObjectBackup)) {
             let newObj: IFilter = {};
             newObj[rule] = expected;
