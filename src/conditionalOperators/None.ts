@@ -5,7 +5,7 @@ class None extends ConditionalOperator {
   alias: string[] = ['none'];
   humanlyReadableAs: string = 'none';
 
-  callback(value: any): boolean {
+  callback(value: boolean[]): boolean {
     return not(value);
   }
 }

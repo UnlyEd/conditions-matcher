@@ -138,7 +138,7 @@ check(context, 'school_city__sw', 'on'); // true
 
  ### Aliases
 * contains
-* includes
+* inside
 * in
 
 ### Example
@@ -269,7 +269,59 @@ const context = {
     'GPA':3,
 };
 check(context, 'GPA__lte', 3); // true
-check(context, 'GPA__lte', '4'); // true TODO check not sure behaviour
+check(context, 'GPA__lte', '4'); // true
+```
+## Is Inside
+
+### Definition
+> String: Checks if the string is inside a given string.
+> Array: Checks if a specific element is inside an array.
+> Object: Checks if a specific element is inside an  object.
+
+ ### Aliases
+* isInside
+* isIn
+
+### Example
+
+```js
+const context = {
+    "name":"Paul",
+    "location":{
+        "city":"lyon",
+        "post_code":69000
+    },
+    "campus":[42, "Unly"],
+    "campus__flags":['i']
+};
+check(context, 'school_name__isIn', ["Paul", "jake"]); // true
+```
+
+## Is Not Inside
+
+### Definition
+> The opposite of "inside".
+> String: Checks if the string is inside a given string.
+> Array: Checks if a specific element is inside an array.
+> Object: Checks if a specific element is inside an  object.
+
+### Aliases
+* isNotInside
+* isnIn
+
+### Example
+
+```js
+const context = {
+    "name":"Paul",
+    "location":{
+        "city":"lyon",
+        "post_code":69000
+    },
+    "campus":[42, "Unly"],
+    "campus__flags":['i']
+};
+check(context, 'school_name__isnIn', ["Paul","Jake"]); // false
 ```
 
 ---

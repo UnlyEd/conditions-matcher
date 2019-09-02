@@ -4,7 +4,7 @@ class GreaterThan extends ConditionalOperator {
   alias: string[] = ['greaterThan', 'gt'];
   humanlyReadableAs: string = 'greaterThan';
 
-  callback(value: string | number, contextValue: string | number, flags: string[]): boolean {
+  callback(value: string | number, contextValue: string | number, flags?: string[]): boolean {
     return contextValue > value;
   }
 }

@@ -1,22 +1,22 @@
 import { CheckError } from '../utils/errors';
 import ConditionalOperator from './ConditionalOperator';
-import { handleArrayInCOPContain, handleObjectInObjectInCOPContain, handleStringInObjectInCOPContain, handleStringInStringInCOPContain } from './utils';
+import { isStringInArray, isObjectInObject, isStringInObject, isStringInString } from './utils';
 
 class NotContains extends ConditionalOperator {
   alias: string[] = ['notContains', 'notIncludes', 'nin'];
-  humanlyReadableAs: string = 'not in';
+  humanlyReadableAs: string = 'does not contain';
 
   callback(value: any, contextValue: any, flags: string[]): boolean {
-    let ret = handleStringInStringInCOPContain(value, contextValue, flags);
+    let ret = isStringInString(contextValue,value , flags);
 
     if (ret === null) {
-      ret = handleArrayInCOPContain(value, contextValue, flags);
+      ret = isStringInArray(contextValue, value, flags);
     }
     if (ret === null) {
-      ret = handleStringInObjectInCOPContain(value, contextValue, flags);
+      ret = isStringInObject(contextValue, value, flags);
     }
     if (ret === null) {
-      ret = handleObjectInObjectInCOPContain(value, contextValue, flags);
+      ret = isObjectInObject(contextValue, value, flags);
     }
 
     // XXX If no return value was resolved, it means the provided types aren't handled
@@ -27,7 +27,7 @@ class NotContains extends ConditionalOperator {
         'value': value,
         'contextValue': contextValue,
         'flags': flags,
-        'reason': `Error: The operator "${this.alias[0]}" does not handle the types "${typeof contextValue}" and "${typeof value}"`,
+        'reason': `The operator "${this.alias[0]}" does not handle the types "${typeof contextValue}" and "${typeof value}"`,
       });
     }
     return !ret;

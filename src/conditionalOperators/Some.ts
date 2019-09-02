@@ -5,7 +5,7 @@ class Some extends ConditionalOperator {
   alias: string[] = ['some'];
   humanlyReadableAs: string = 'some';
 
-  callback(value: any): boolean {
+  callback(value: boolean[]): boolean {
     return or(value);
   }
 }

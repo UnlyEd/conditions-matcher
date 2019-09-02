@@ -1,4 +1,5 @@
 import Contains from './Contains';
+import IsInside from "./IsInside"
 import EndsWith from './EndsWith';
 import Equals from './Equals';
 import Every from './Every';
@@ -9,6 +10,7 @@ import LessThanEquals from './LessThanEquals';
 import None from './None';
 import NotContains from './NotContains';
 import NotEquals from './NotEquals';
+import IsNotInside from './IsNotInside';
 import Some from './Some';
 import StartsWith from './StartsWith';
 
@@ -25,5 +27,7 @@ export default [
   new GreaterThan(),
   new GreaterThanEquals(),
   new LessThan(),
-  new LessThanEquals()
+  new LessThanEquals(),
+  new IsInside(),
+  new IsNotInside
 ];

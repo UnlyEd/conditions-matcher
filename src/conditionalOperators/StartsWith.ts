@@ -1,4 +1,5 @@
 import { isString, startsWith } from 'lodash';
+import { CheckError } from '../utils/errors';
 import ConditionalOperator from './ConditionalOperator';
 
 class StartsWith extends ConditionalOperator {
@@ -12,14 +13,14 @@ class StartsWith extends ConditionalOperator {
       }
       return startsWith(contextValue, value);
     }
-    throw new Error(JSON.stringify({
+    throw new CheckError({
       'status': false,
       'conditionalOperator': this.alias[0],
       'value': value,
       'contextValue': contextValue,
       'flags': flags,
-      'reason': `Error: The operator "${this.alias[0]}" does not handle the types "${typeof contextValue}" and "${typeof value}"`,
-    }));
+      'reason': `The operator "${this.alias[0]}" does not handle the types "${typeof contextValue}" and "${typeof value}"`,
+    });
   }
 }
 

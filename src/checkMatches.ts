@@ -53,6 +53,13 @@ const checkContextMatchesConditions = (filter: IFilter, context: object, options
         } else {
           returnValues[logicalOperator] = returnValues[logicalOperator] || [];
           returnValues[logicalOperator].push(status);
+
+          // Make sure every ignored condition is handled by pushing them in the "ignoredConditions" array, if there are any
+          if (ignoredConditions) {
+            ignoredConditions.forEach((ignoredCondition: object) => {
+              ignoredConditionsCollection.push(ignoredCondition);
+            });
+          }
         }
       });
     } else {

@@ -54,6 +54,43 @@ describe('src/conditions', () => {
         expect(checkContextMatchesConditions(filtersNestedSimple, contextNoisy)).toMatchObject({ 'status': false });
       });
 
+      test('oui', () => {
+        const oui = {
+          'OR': [
+            {
+              'AND': [
+                {
+                  'organisation_name': 'skema'
+                },
+                {
+                  'campus_name': 'paris-la-defense'
+                },
+                {
+                  'institution_name': 'skema-business-school'
+                }
+              ]
+            },
+            {
+              'AND': [
+                {
+                  'organisation_name': 'skema'
+                },
+                {
+                  'campus_name': 'lille'
+                },
+                {
+                  'institution_name': 'skema-business-school'
+                }
+              ]
+            }
+          ]
+        };
+        const ret = checkContextMatchesConditions(oui, {});
+        console.dir(ret.ignoredConditions, {depth:null, colors:true});
+        expect(ret.ignoredConditions).not.toBe(null);
+
+      });
+
       test(`should match when correct institution_name is in context`, async () => {
         const filtersSimple = {
           'institution_name': 'skema',
@@ -481,7 +518,7 @@ describe('src/conditions', () => {
               {
                 'AND': [ // true
                   {
-                    'organisation_name__in': ['skema', 'epitech', '42'], // true
+                    'organisation_name__isIn': ['skema', 'epitech', '42'], // true
                     'OR': [ // true
                       {
                         'NOT': [ // true
@@ -510,7 +547,7 @@ describe('src/conditions', () => {
                   {
                     'NOT': [
                       { // false
-                        'organisation_name__nin': ['42', 'epitech', '101'], // true
+                        'organisation_name__isnIn': ['42', 'epitech', '101'], // true
                       },
                     ],
                   },
@@ -530,11 +567,11 @@ describe('src/conditions', () => {
                   {
                     'NOT': [
                       { // false
-                        'organisation_name__nin': ['42', 'epitech', '101'], // true
+                        'organisation_name__isnIn': ['42', 'epitech', '101'], // true
                         'organisation_plateform_type__ne': 'school', // false
                       },
                     ],
-                    'organisation_plateform_grade__nin': ['A', 'B', 'C'], // false
+                    'organisation_plateform_grade__isnIn': ['A', 'B', 'C'], // false
                   },
                 ],
               },
@@ -552,11 +589,11 @@ describe('src/conditions', () => {
                   {
                     'NOT': [
                       {// true
-                        'organisation_name__nin': ['skema', '42', 'epitech', '101'], // false
+                        'organisation_name__isnIn': ['skema', '42', 'epitech', '101'], // false
                         'organisation_plateform_type__ne': 'school', // false
                       },
                     ],
-                    'organisation_plateform_grade__in': ['A', 'B', 'C'], // true
+                    'organisation_plateform_grade__isIn': ['A', 'B', 'C'], // true
                   },
                 ],
               },
@@ -595,7 +632,7 @@ describe('src/conditions', () => {
           };
           const { status, ignoredConditions } = checkContextMatchesConditions(filtersNestedSimple, context);
           expect(status).toEqual(true);
-          expect(ignoredConditions).toMatchObject([{ conditionalOperator: 'wrong-arg' }]);
+          expect(ignoredConditions[0]).toMatchObject({ conditionalOperator: 'wrong-arg' });
         });
 
         test(`should work with multiple AND, OR and NOT`, async () => {
@@ -607,11 +644,11 @@ describe('src/conditions', () => {
                   {
                     'NOT': [
                       { // false
-                        'organisation_name__nin': ['42', 'epitech', '101'], // true
+                        'organisation_name__isnIn': ['42', 'epitech', '101'], // true
                         'organisation_plateform_type__ne': 'school', // false
                       },
                     ],
-                    'organisation_plateform_grade__nin': ['A', 'B', 'C'], // false
+                    'organisation_plateform_grade__isnIn': ['A', 'B', 'C'], // false
                   },
                 ],
               },
@@ -629,11 +666,11 @@ describe('src/conditions', () => {
                   {
                     'NOT': [
                       {// true
-                        'organisation_name__nin': ['skema', '42', 'epitech', '101'], // false
+                        'organisation_name__isnIn': ['skema', '42', 'epitech', '101'], // false
                         'organisation_plateform_type__ne': 'school', // false
                       },
                     ],
-                    'organisation_plateform_grade__in': ['A', 'B', 'C'], // true
+                    'organisation_plateform_grade__isIn': ['A', 'B', 'C'], // true
                   },
                 ],
               },

@@ -4,7 +4,7 @@ class LessThan extends ConditionalOperator {
   alias: string[] = ['lessThan', 'lt'];
   humanlyReadableAs: string = 'less than';
 
-  callback(value: string | number, contextValue: string | number, flags: string[]): boolean {
+  callback(value: string | number, contextValue: string | number, flags?: string[]): boolean {
     return contextValue < value;
   }
 }

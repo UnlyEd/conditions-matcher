@@ -121,10 +121,11 @@ export const resolveComplexOperator = (operators: string) => {
  * @param path
  * @param context
  * @param givenValue
+ * @param options
  * @return {{reason: string, flags: *, given_value: *, valueInContext: Array, operator: *, status: *}}
  */
 
-export const handleComplexRequest = (operators: string, path: string, context: IFilter, givenValue: any) => {
+export const handleComplexRequest = (operators: string, path: string, context: IFilter, givenValue: any, options: IMap) => {
   const { complexConditionalOperator, conditionalOperator } = resolveComplexOperator(operators);
   let flags: string[] = [];
   let results: boolean[] = [];
@@ -133,7 +134,32 @@ export const handleComplexRequest = (operators: string, path: string, context: I
   const fieldKeyToCheck: any = splitPath.pop();
   const resolvedContextFieldValue = get(context, splitPath.join(GET_SEPARATOR));
   const callback = findInConditions(conditionalOperator, 'callback', flags);
-
+  if (isUndefined(resolvedContextFieldValue)) {
+    if (options['strictMatch'] === true) {
+      // XXX In "strict match" mode, missing values in context are treated as a match failure
+      return {
+        'status': false,
+        'is_ignored': true,
+        'complex_operator': complexConditionalOperator,
+        'conditionalOperator': conditionalOperator,
+        'given_value': givenValue,
+        'valueInContext': undefined,
+        'flags': flags,
+        'reason': 'Fail because value not found in context',
+      };
+    } else {
+      // XXX In the other case, the value is considered as "missing" and a special exception is thrown
+      //  This exception must be handled by the caller, and should be used to resolve whether the check fails or not (based on a group of "checks", for instance)
+      throw(new ValueNotFound({
+        'status': null,
+        'complex_operator': complexConditionalOperator,
+        'conditionalOperator': conditionalOperator,
+        'path': path,
+        'valueInContext': undefined,
+        'reason': `Error: path: ${path} is not defined in context`,
+      }));
+    }
+  }
   map(resolvedContextFieldValue, (valueInContext: IMap) => {
     flags = get(valueInContext, fieldKeyToCheck + FLAGS_INDICATOR, []);
     if (isUndefined(valueInContext) || isUndefined(givenValue)) {
@@ -178,7 +204,7 @@ export const check = (context: object, rule: string, value: any, options: IMap =
   let { conditionalOperator, path } = resolveInformationInRuleKey(rule);
 
   if (conditionalOperator.includes(EVERY_STRING) || conditionalOperator.includes(SOME_STRING) || conditionalOperator.includes(NONE_STRING)) {
-    return handleComplexRequest(conditionalOperator, path, context, value);
+    return handleComplexRequest(conditionalOperator, path, context, value, options);
   }
 
   const valueInContext: any = get(context, path);

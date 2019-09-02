@@ -19,7 +19,7 @@ class EndsWith extends ConditionalOperator {
       'value': value,
       'contextValue': contextValue,
       'flags': flags,
-      'reason': `Error: The operator "${this.alias[0]}" does not handle the types "${typeof contextValue}" and "${typeof value}"`,
+      'reason': `The operator "${this.alias[0]}" does not handle the types "${typeof contextValue}" and "${typeof value}"`,
     });
   }
 }

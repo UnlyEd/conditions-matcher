@@ -5,7 +5,7 @@ class Every extends ConditionalOperator {
   alias: string[] = ['every'];
   humanlyReadableAs: string = 'every';
 
-  callback(value: any): boolean {
+  callback(value: boolean[]): boolean {
     return and(value);
   }
 }

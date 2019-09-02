@@ -67,175 +67,36 @@ describe('utils/check', () => {
     });
   });
 
-  describe('startsWith test', () => {
-    test(`startsWith operator`, async () => {
-      expect(check(context, 'school_name__startsWith', 'EPI').status).toEqual(true);
+  describe('complex operators', () => {
+    describe('every operator', () => {
+      test(`on standard usage`, async () => {
+        expect(check(context, 'partner_number__every_eq', 42).status).toEqual(true);
+      });
+      test(`with default value`, async () => {
+        expect(check(context, 'partner_number__every', 42).status).toEqual(true);
+      });
+      test(`with empty context`, async () => {
+        expect(() => {
+          check({}, 'partner_number__every', 42);
+        }).toThrowError(/ValueNotFound/);
+      });
+      test(`with empty context and strict match mode on`, async () => {
+        expect(check({}, 'partner_number__every', 42, { 'strictMatch': true }).status).toBeFalsy();
+      });
     });
-    test(`startsWith operator should be false`, async () => {
-      expect(check(context, 'school_name__startsWith', 'unly').status).toEqual(false);
-    });
-  });
 
-  describe('endsWith test', () => {
-    test(`endsWith operator`, async () => {
-      expect(check(context, 'school_name__endsWith', 'TECH').status).toEqual(true);
+    describe('some operator', () => {
+      test(`on standard usage`, async () => {
+        expect(check(context, 'partner_name__some_eq', 'banque').status).toEqual(true);
+      });
     });
-    test(`endsWith operator should not match`, async () => {
-      expect(check(context, 'school_name__endsWith', 'unly').status).toEqual(false);
-    });
-  });
 
-  describe('equals test', () => {
-    test(`equals test with string === string`, async () => {
-      expect(check(context, 'school_name__eq', 'EPITECH').status).toEqual(true);
+    describe('non operator', () => {
+      test(`on standard usage`, async () => {
+        expect(check(context, 'partner_name__none_eq', 'fake_name').status).toEqual(true);
+        expect(check(context, 'school_name__none_eq', 'fake_name').status).toEqual(true);
+      });
     });
-    test(`equals test with array === array`, async () => {
-      const tmp = check(context, 'list__eq', [42, 24]);
-      expect(tmp.status).toEqual(true);
-    });
-    test(`equals test with number === string`, async () => {
-      expect(check(context, 'school_averageGPA__eq', '2.5').status).toEqual(false);
-    });
-    test(`equals test with object === object`, async () => {
-      expect(check(context, 'school_address__eq', {
-        'street': 'Baker Street',
-        'city': 'London',
-        'number': '221B',
-      }).status).toEqual(true);
-    });
-    test(`equals test with object !== object`, async () => {
-      expect(check(context, 'school_address__eq', {
-        'street': 'Baker Street',
-        'city': 'London',
-      }).status).toEqual(false);
-    });
-  });
 
-  describe('not test', () => {
-    test(`not operator`, async () => {
-      expect(check(context, 'school_name__ne', 'UNLY').status).toEqual(true);
-    });
-  });
-
-  describe('contains test', () => {
-    test(`contains operator`, async () => {
-      expect(check(context, 'school_name__in', ['STUDYLINK', 'UNLY']).status).toEqual(false);
-    });
-    test(`contains operator with string`, async () => {
-      expect(check(context, 'school_name__in', 'TECH').status).toEqual(true);
-    });
-    test(`contains operator with bool`, async () => {
-      expect(check(context, 'school_isOpen__in', [true, 'epitech']).status).toEqual(true);
-    });
-    test(`contains operator with number`, async () => {
-      expect(check(context, 'school_averageGPA__in', [true, 2.5]).status).toEqual(true);
-    });
-    test(`contain operator with object`, async () => {
-      expect(check(context, 'school__contains', { 'street': 'Baker Street' }).status).toEqual(true);
-    });
-  });
-
-  describe('not contains test', () => {
-    test(`not contains test`, async () => {
-      expect(check(context, 'school_name__nin', ['EPITECH', 'UNLY']).status).toEqual(false);
-    });
-    test(`not contains test should be false`, async () => {
-      expect(check(context, 'school_name__nin', ['STUDYLINK', 'UNLY']).status).toEqual(true);
-    });
-  });
-
-  describe('less than test', () => {
-    test(`less than operator`, async () => {
-      expect(check(context, 'school_averageGPA__lt', 5).status).toEqual(true);
-    });
-    test(`less or equal than operator`, async () => {
-      expect(check(context, 'school_averageGPA__lte', 5).status).toEqual(true);
-    });
-    test(`less operator should be false`, async () => {
-      expect(check(context, 'school_averageGPA__lt', 1).status).toEqual(false);
-    });
-  });
-
-  describe('greater than test', () => {
-    test(`greater than operator`, async () => {
-      expect(check(context, 'school_averageGPA__gt', 1).status).toEqual(true);
-    });
-    test(`greater or equal operator `, async () => {
-      expect(check(context, 'school_averageGPA__gte', 1).status).toEqual(true);
-    });
-    test(`greater or equal operator with equal`, async () => {
-      expect(check(context, 'school_averageGPA__gte', 2.5).status).toEqual(true);
-    });
-    test(`greater or equal should be false`, async () => {
-      expect(check(context, 'school_averageGPA__gt', 5).status).toEqual(false);
-    });
-  });
-
-  describe('every some non test', () => {
-    test(`every test`, async () => {
-      expect(check(context, 'partner_number__every_eq', 42).status).toEqual(true);
-    });
-    test(`some test`, async () => {
-      expect(check(context, 'partner_name__some_eq', 'banque').status).toEqual(true);
-    });
-    test(`none test`, async () => {
-      expect(check(context, 'partner_name__none_eq', 'fake_name').status).toEqual(true);
-    });
-    // Check with unexpected input (not array)
-    test(`none test`, async () => {
-      expect(check(context, 'school_name__every_eq', 'fake_name').status).toEqual(false);
-    });
-    test(`none test`, async () => {
-      expect(check(context, 'school_name__none_eq', 'fake_name').status).toEqual(true);
-    });
-  });
-
-  describe('test flags', () => {
-    const context = {
-      'school': {
-        'name': 'EPITECH',
-        'name__flags': ['i'],
-        'averageGPA': 2.5,
-        'averageGPAString': '2.5',
-        'address': {
-          'street': 'Baker Street',
-          'number': '221B',
-          'city': 'London',
-        },
-        'isOpen': true,
-      },
-      'list': [42, 24],
-      'partner': [
-        {
-          name: 'banque',
-          name__flag: ['i'],
-          number: 42,
-        },
-        {
-          name: 'UNLY',
-          name__flags: [],
-          number: 42,
-        },
-        {
-          name: 'studylink',
-          number: 42,
-        },
-      ],
-    };
-    test('equal i flag', async () => {
-      expect(check(context, 'school_name__eq', 'epitech').status).toEqual(true);
-    });
-    test('startsWith i flag', async () => {
-      expect(check(context, 'school_name__sw', 'epi').status).toEqual(true);
-    });
-    test('endsWith i flag', async () => {
-      expect(check(context, 'school_name__ew', 'tech').status).toEqual(true);
-    });
-    test('contains i flag', async () => {
-      expect(check(context, 'school_name__in', ['epitech']).status).toEqual(true);
-    });
-    test('nocontains i flag', async () => {
-      expect(check(context, 'school_name__nin', ['epitech']).status).toEqual(false);
-    });
   });
 });
