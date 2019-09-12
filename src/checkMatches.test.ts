@@ -54,43 +54,6 @@ describe('checkMatches', () => {
         expect(checkContextMatchesConditions(filtersNestedSimple, contextNoisy)).toMatchObject({ 'status': false });
       });
 
-      test('oui', () => {
-        const oui = {
-          'OR': [
-            {
-              'AND': [
-                {
-                  'organisation_name': 'skema'
-                },
-                {
-                  'campus_name': 'paris-la-defense'
-                },
-                {
-                  'institution_name': 'skema-business-school'
-                }
-              ]
-            },
-            {
-              'AND': [
-                {
-                  'organisation_name': 'skema'
-                },
-                {
-                  'campus_name': 'lille'
-                },
-                {
-                  'institution_name': 'skema-business-school'
-                }
-              ]
-            }
-          ]
-        };
-        const ret = checkContextMatchesConditions(oui, {});
-        console.dir(ret.ignoredConditions, { depth: null, colors: true });
-        expect(ret.ignoredConditions).not.toBe(null);
-
-      });
-
       test(`should match when correct institution_name is in context`, async () => {
         const filtersSimple = {
           'institution_name': 'skema',
@@ -743,6 +706,40 @@ describe('checkMatches', () => {
         expect(ret.status).toEqual(false);
         expect(ret.ignoredConditions).toHaveLength(1);
         expect(ret.ignoredConditions[0].expected).toBeUndefined();
+      });
+      test('deep nested ignored condition should fill the ignored condition array', () => {
+        const filter = {
+          'OR': [
+            {
+              'AND': [
+                {
+                  'organisation_name': 'skema'
+                },
+                {
+                  'campus_name': 'paris-la-defense'
+                },
+                {
+                  'institution_name': 'skema-business-school'
+                }
+              ]
+            },
+            {
+              'AND': [
+                {
+                  'organisation_name': 'skema'
+                },
+                {
+                  'campus_name': 'lille'
+                },
+                {
+                  'institution_name': 'skema-business-school'
+                }
+              ]
+            }
+          ]
+        };
+        const ret = checkContextMatchesConditions(filter, {});
+        expect(ret.ignoredConditions.length).toBe(6);
       });
     });
 
