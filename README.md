@@ -44,13 +44,15 @@ The biggest strengths of this plugin are:
 
 ### Installation
 
+You have to login to the github registry, as show [here](https://help.github.com/en/github/managing-packages-with-github-package-registry/configuring-npm-for-use-with-github-package-registry#authenticating-to-github-package-registry)
+
 Using npm :
 ```
-npm i @unly/conditions-matcher
+npm i @unlyed/conditions-matcher
 ```
 Using yarn :
 ```
-yarn add @unly/conditions-matcher
+yarn add @unlyed/conditions-matcher
 ```
 
 ### Usage
@@ -58,12 +60,12 @@ yarn add @unly/conditions-matcher
 #### Import in you project
 ES5
 ```js
-const contextMatcher = require("@unly/conditions-matcher");
+const contextMatcher = require("@unlyed/conditions-matcher");
 ```
 
 ES6
 ```js
-import contextMatcher from "@unly/conditions-matcher";
+import contextMatcher from "@unlyed/conditions-matcher";
 ```
 
 See the [examples](./examples) for more details, clone the project to play around with those.
