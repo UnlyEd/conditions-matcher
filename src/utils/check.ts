@@ -132,7 +132,8 @@ export const handleComplexRequest = (operators: string, path: string, context: I
   let matches: IFilter = [];
   let splitPath: string[] = path.split(GET_SEPARATOR);
   const fieldKeyToCheck: any = splitPath.pop();
-  const resolvedContextFieldValue = get(context, splitPath.join(GET_SEPARATOR));
+  const pathToValues = splitPath.length !== 0 ? splitPath.join(GET_SEPARATOR) : fieldKeyToCheck;
+  const resolvedContextFieldValue = get(context, pathToValues);
   const callback = findInConditions(conditionalOperator, 'callback', flags);
   if (isUndefined(resolvedContextFieldValue)) {
     if (options['strictMatch'] === true) {
@@ -173,8 +174,13 @@ export const handleComplexRequest = (operators: string, path: string, context: I
         'reason': `Fail because ${complexConditionalOperator} of "${valueInContext}" is not ${findInConditions(conditionalOperator, 'humanlyReadableAs', flags)} "${givenValue}"`,
       };
     }
-    matches.push({ 'value': givenValue, 'valueInContext': valueInContext[fieldKeyToCheck] });
-    results.push(callback(givenValue, valueInContext[fieldKeyToCheck], flags));
+    if (splitPath.length === 0) {
+      matches.push({ 'value': givenValue, 'valueInContext': valueInContext });
+      results.push(callback(givenValue, valueInContext, flags));
+    } else {
+      matches.push({ 'value': givenValue, 'valueInContext': valueInContext[fieldKeyToCheck] });
+      results.push(callback(givenValue, valueInContext[fieldKeyToCheck], flags));
+    }
   });
 
   const isSuccess = findInConditions(complexConditionalOperator, 'callback', flags)(results);
