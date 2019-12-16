@@ -18,7 +18,9 @@
     "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
     "test": "NODE_ENV=test jest --watch",
     "test:once": "NODE_ENV=test jest",
-    "test:coverage": "NODE_ENV=test jest --coverage"
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "main": "lib/checkMatches.js",
   "repository": {
@@ -61,6 +63,8 @@
     "version-bump-prompt": "4.2.2"
   },
   "dependencies": {
-    "lodash": "4.17.14"
-  }
+    "lodash": "4.17.14",
+    "snyk": "^1.260.0"
+  },
+  "snyk": true
 }
