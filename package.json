@@ -15,10 +15,14 @@
     "publish:preview": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
     "release": "yarn bump --prompt --commit --tag --push",
     "releaseAndPublish": "yarn release && npm publish",
+    "snyk:setupPolicy": "snyk wizard --org=unly",
+    "snyk:fixVulnerabilities": "snyk protect --org=unly",
+    "snyk:fixVulnerabilitiesExamples": "yarn snyk:fixVulnerabilities --all-projects",
     "doc:toc": "yarn markdown-toc --maxdepth 4 -i README.md",
     "test": "NODE_ENV=test jest --watch",
     "test:once": "NODE_ENV=test jest",
-    "test:coverage": "NODE_ENV=test jest --coverage"
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "test:vulnerabilities": "snyk test --org=unly"
   },
   "main": "lib/checkMatches.js",
   "repository": {
@@ -56,6 +60,7 @@
     "jest": "24.8.0",
     "jsdoc-to-markdown": "4.0.1",
     "markdown-toc": "1.2.0",
+    "snyk": "1.290.2",
     "ts-jest": "24.0.2",
     "typescript": "3.5.2",
     "version-bump-prompt": "4.2.2"
